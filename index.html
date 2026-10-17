@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<script>
+{
+  const colorScheme = localStorage.getItem("color-scheme");
+  if (colorScheme) {
+    document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+    document.documentElement.setAttribute("data-theme", colorScheme);
+  }
+}
+</script>
+<title>Backend Domination · Curriculum Hub | Sheryians Coding School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design Tokens & Color Scheme ── */
+:root {
+  --ink-light: #0E0F14;
+  --ink-dark: #EDE9DF;
+  --paper-light: #F5F2EB;
+  --paper-dark: #121319;
+  --paper2-light: #EDE9DF;
+  --paper2-dark: #1A1C23;
+  --paper3-light: #E4DFD3;
+  --paper3-dark: #23252E;
+  --rule-light: #D4CEBC;
+  --rule-dark: #33353F;
+  --muted-light: #6B6455;
+  --muted-dark: #A39B8A;
+  --accent-light: #C84B1F;
+  --accent-dark: #E2663B;
+  --accent2-light: #1A6B4A;
+  --accent2-dark: #3FA57A;
+  --accent3-light: #1B4587;
+  --accent3-dark: #7EA3E0;
+  --gold-light: #B8860B;
+  --gold-dark: #D9A62E;
+  --surface-light: #FFFFFF;
+  --surface-dark: #16171E;
+
+  --ink: var(--ink-light);
+  --paper: var(--paper-light);
+  --paper2: var(--paper2-light);
+  --paper3: var(--paper3-light);
+  --rule: var(--rule-light);
+  --muted: var(--muted-light);
+  --accent: var(--accent-light);
+  --accent2: var(--accent2-light);
+  --accent3: var(--accent3-light);
+  --gold: var(--gold-light);
+  --surface: var(--surface-light);
+  --nav-bg: #0E0F14;
+  --accent-soft: rgba(200, 75, 31, 0.10);
+  --green-soft: rgba(26, 107, 74, 0.12);
+  --blue-soft: rgba(27, 69, 135, 0.10);
+  --gold-soft: rgba(184, 134, 11, 0.14);
+
+  color-scheme: light dark;
+  accent-color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: var(--ink-dark);
+    --paper: var(--paper-dark);
+    --paper2: var(--paper2-dark);
+    --paper3: var(--paper3-dark);
+    --rule: var(--rule-dark);
+    --muted: var(--muted-dark);
+    --accent: var(--accent-dark);
+    --accent2: var(--accent2-dark);
+    --accent3: var(--accent3-dark);
+    --gold: var(--gold-dark);
+    --surface: var(--surface-dark);
+    --nav-bg: #0A0B0F;
+    --accent-soft: rgba(226, 102, 59, 0.14);
+    --green-soft: rgba(63, 165, 122, 0.16);
+    --blue-soft: rgba(126, 163, 224, 0.14);
+    --gold-soft: rgba(217, 166, 46, 0.16);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: var(--ink-dark);
+  --paper: var(--paper-dark);
+  --paper2: var(--paper2-dark);
+  --paper3: var(--paper3-dark);
+  --rule: var(--rule-dark);
+  --muted: var(--muted-dark);
+  --accent: var(--accent-dark);
+  --accent2: var(--accent2-dark);
+  --accent3: var(--accent3-dark);
+  --gold: var(--gold-dark);
+  --surface: var(--surface-dark);
+  --nav-bg: #0A0B0F;
+  --accent-soft: rgba(226, 102, 59, 0.14);
+  --green-soft: rgba(63, 165, 122, 0.16);
+  --blue-soft: rgba(126, 163, 224, 0.14);
+  --gold-soft: rgba(217, 166, 46, 0.16);
+}
+
+@supports (color: light-dark(white, black)) {
+  :root:not([data-theme]) {
+    --ink: light-dark(var(--ink-light), var(--ink-dark));
+    --paper: light-dark(var(--paper-light), var(--paper-dark));
+    --paper2: light-dark(var(--paper2-light), var(--paper2-dark));
+    --paper3: light-dark(var(--paper3-light), var(--paper3-dark));
+    --rule: light-dark(var(--rule-light), var(--rule-dark));
+    --muted: light-dark(var(--muted-light), var(--muted-dark));
+    --accent: light-dark(var(--accent-light), var(--accent-dark));
+    --accent2: light-dark(var(--accent2-light), var(--accent2-dark));
+    --accent3: light-dark(var(--accent3-light), var(--accent3-dark));
+    --gold: light-dark(var(--gold-light), var(--gold-dark));
+    --surface: light-dark(var(--surface-light), var(--surface-dark));
+  }
+}
+
+/* ── Resets & Typography ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+  margin-top: 0;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── Layout ── */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: var(--nav-bg);
+  color: #EDE9DF;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 28px 0 36px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  max-width: calc(100% - 280px);
+  padding: 48px 56px 96px;
+}
+
+.main-inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* ── Sidebar Navigation ── */
+.nav-brand {
+  padding: 0 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 16px;
+}
+
+.nav-brand .logo {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+}
+
+.nav-brand .logo .accent-dot {
+  color: #E2663B;
+}
+
+.nav-brand .sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.nav-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.32);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  margin: 14px 0 5px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.62);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+.nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+  color: #FFFFFF;
+  border-left-color: #E2663B;
+  background-color: rgba(226, 102, 59, 0.12);
+}
+
+.nav-num {
+  width: 22px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-link:hover .nav-num,
+.nav-link.active .nav-num {
+  background-color: #E2663B;
+  color: #FFFFFF;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+}
+
+/* ── Top Controls Bar ── */
+.top-utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+
+.breadcrumb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 5px 14px;
+}
+
+.breadcrumb-pill .pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent2);
+}
+
+.utility-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: var(--paper2);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  background-color: var(--paper3);
+}
+
+/* ── Hero Section ── */
+.hero {
+  margin-bottom: 44px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(36px, 4.8vw, 56px);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.hero-desc {
+  font-size: 16.5px;
+  color: var(--muted);
+  max-width: 680px;
+  line-height: 1.65;
+  margin: 0 0 28px;
+}
+
+/* ── Stats Grid ── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.stat-card {
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.stat-val {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.stat-val span {
+  color: var(--accent);
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+/* ── Roadmap Timeline Bar ── */
+.roadmap-strip {
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+}
+
+.roadmap-strip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.roadmap-strip-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.roadmap-steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.roadmap-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.roadmap-step:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.roadmap-step .step-idx {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.roadmap-arrow {
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  user-select: none;
+}
+
+/* ── Filter & Search Controls ── */
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 32px;
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  padding: 14px 18px;
+  border-radius: 12px;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.search-input {
+  width: 100%;
+  background-color: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 9px 14px 9px 36px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-btn {
+  background-color: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.filter-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.filter-btn.active {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+/* ── Phase Dividers ── */
+.phase-section {
+  margin-bottom: 52px;
+  scroll-margin-top: 28px;
+}
+
+.phase-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.phase-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phase-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.phase-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.phase-desc {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* ── Topic Cards ── */
+.topics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.topic-card {
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 28px 30px;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  position: relative;
+  scroll-margin-top: 28px;
+}
+
+.topic-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.12);
+}
+
+.topic-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.topic-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topic-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.topic-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.open-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--accent);
+  color: #FFFFFF;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  transition: opacity 150ms ease, transform 150ms ease;
+  flex-shrink: 0;
+}
+
+.open-doc-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.topic-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.topic-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topic-title a:hover {
+  color: var(--accent);
+}
+
+.topic-desc {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0 0 16px;
+  max-width: 780px;
+}
+
+.topic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 22px;
+}
+
+.topic-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 2px 11px;
+}
+
+/* ── Deep-Link Section Anchor Blocks ── */
+.anchors-block {
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.anchors-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.anchors-block-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.anchors-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--accent2);
+  background-color: var(--green-soft);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.anchors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+  gap: 8px;
+}
+
+.anchor-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 12.5px;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+  overflow: hidden;
+}
+
+.anchor-chip:hover {
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+  color: var(--accent);
+}
+
+.anchor-chip-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  background-color: var(--paper2);
+  padding: 2px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.anchor-chip:hover .anchor-chip-num {
+  background-color: var(--accent);
+  color: #FFFFFF;
+}
+
+.anchor-chip-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty-state {
+  display: none;
+  text-align: center;
+  padding: 48px 24px;
+  background-color: var(--paper2);
+  border: 1px dashed var(--rule);
+  border-radius: 12px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+}
+
+/* ── Footer ── */
+.site-footer {
+  margin-top: 72px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    max-width: 100%;
+    padding: 32px 24px 72px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="layout-container">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="sidebar" aria-label="Curriculum Navigation">
+    <div class="nav-brand">
+      <div class="logo">Sheryians<span class="accent-dot">.</span>Hub</div>
+      <div class="sub">Backend Domination Notes</div>
+    </div>
+
+    <div class="nav-group-label">Phase 01 · Foundations &amp; HTTP</div>
+    <a href="#module-01" class="nav-link active"><span class="nav-num">01</span><span>Git &amp; GitHub</span></a>
+    <a href="#module-02" class="nav-link"><span class="nav-num">02</span><span>HTTP, Ports &amp; Express</span></a>
+    <a href="#module-03" class="nav-link"><span class="nav-num">03</span><span>REST API Fundamentals</span></a>
+
+    <div class="nav-group-label">Phase 02 · API &amp; Auth Security</div>
+    <a href="#module-04" class="nav-link"><span class="nav-num">04</span><span>Express Validation</span></a>
+    <a href="#module-05" class="nav-link"><span class="nav-num">05</span><span>Authentication 101</span></a>
+    <a href="#module-06" class="nav-link"><span class="nav-num">06</span><span>Access &amp; Refresh Tokens</span></a>
+
+    <div class="nav-group-label">Phase 03 · Database Mastery</div>
+    <a href="#module-07" class="nav-link"><span class="nav-num">07</span><span>MongoDB Introduction</span></a>
+    <a href="#module-08" class="nav-link"><span class="nav-num">08</span><span>MongoDB Indexing</span></a>
+    <a href="#module-09" class="nav-link"><span class="nav-num">09</span><span>Aggregation Pipeline</span></a>
+
+    <div class="nav-group-label">Phase 04 · Systems &amp; Mastery</div>
+    <a href="#module-10" class="nav-link"><span class="nav-num">10</span><span>URL Shortener (SRS)</span></a>
+    <a href="#module-11" class="nav-link"><span class="nav-num">11</span><span>Real-Time Socket.IO</span></a>
+    <a href="#module-12" class="nav-link"><span class="nav-num">12</span><span>Payment Gateways</span></a>
+    <a href="#module-13" class="nav-link"><span class="nav-num">13</span><span>100 MERN Interview Qs</span></a>
+
+    <div class="sidebar-footer">
+      13 Complete Modules<br>
+      170+ Deep-Linked Sections<br>
+      Chronological Learning Path
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN CONTENT ═══════════ -->
+  <main class="main-content">
+    <div class="main-inner">
+
+      <!-- Top Utility Bar -->
+      <div class="top-utility-bar">
+        <div class="breadcrumb-pill">
+          <span class="pulse"></span>
+          <span>Sheryians Coding School · Backend Engineering Cohort</span>
+        </div>
+        <div class="utility-actions">
+          <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+            <span id="themeIcon">◐</span>
+            <span id="themeLabel">Switch Theme</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <header class="hero">
+        <div class="hero-eyebrow">Master Curriculum Index · Entry Point</div>
+        <h1>Backend Engineering <em>Notes Hub.</em></h1>
+        <p class="hero-desc">
+          Your central command center and chronological study guide for the complete Sheryians Backend Notes collection. Open any of the 13 topic handbooks directly or jump straight into specific sub-sections, interactive simulators, and architecture flows.
+        </p>
+
+        <div class="stats-bar">
+          <div class="stat-card">
+            <div class="stat-val">13<span>.</span></div>
+            <div class="stat-label">Topic Handbooks</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">04<span>.</span></div>
+            <div class="stat-label">Learning Phases</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">170<span>+</span></div>
+            <div class="stat-label">Curated Section Links</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">100<span>+</span></div>
+            <div class="stat-label">MERN Interview Qs</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Quick Chronological Strip -->
+      <section class="roadmap-strip" aria-label="Chronological Path">
+        <div class="roadmap-strip-header">
+          <span class="roadmap-strip-title">Chronological Study Sequence (01 → 13)</span>
+        </div>
+        <div class="roadmap-steps">
+          <a class="roadmap-step" href="git-github-notes.html"><span class="step-idx">01</span>Git &amp; GitHub</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="http-express-notes.html"><span class="step-idx">02</span>HTTP &amp; Express</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="rest-api-notes.html"><span class="step-idx">03</span>REST API</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="express-validator-notes.html"><span class="step-idx">04</span>Validation</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="authentication-notes.html"><span class="step-idx">05</span>Authentication</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="access-refresh-tokens.html"><span class="step-idx">06</span>Tokens</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="mongodb-intro-notes.html"><span class="step-idx">07</span>MongoDB Intro</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="mongodb-indexing-notes.html"><span class="step-idx">08</span>Indexing</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="07-mongodb-aggregation-notes.html"><span class="step-idx">09</span>Aggregation</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="url-shortener-srs.html"><span class="step-idx">10</span>URL Shortener SRS</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="socket-io-notes.html"><span class="step-idx">11</span>Socket.IO</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="payment-gateway-notes.html"><span class="step-idx">12</span>Payment Gateway</a>
+          <span class="roadmap-arrow">→</span>
+          <a class="roadmap-step" href="mern-interview-questions.html"><span class="step-idx">13</span>100 MERN Qs</a>
+        </div>
+      </section>
+
+      <!-- Search and Phase Filter Controls -->
+      <div class="controls-panel">
+        <div class="search-box">
+          <span class="search-icon">⌕</span>
+          <input
+            type="search"
+            id="topicSearch"
+            class="search-input"
+            placeholder="Filter topics or section anchors (e.g. HTTP, REST, Mongoose, JWT, B+ tree, $lookup, Zod, Razorpay)..."
+            aria-label="Search topics and sections"
+          >
+        </div>
+        <div class="filter-pills" role="group" aria-label="Filter by learning phase">
+          <button type="button" class="filter-btn active" data-filter="all">All Phases (13)</button>
+          <button type="button" class="filter-btn" data-filter="phase-1">01 · Foundations &amp; HTTP</button>
+          <button type="button" class="filter-btn" data-filter="phase-2">02 · API &amp; Auth</button>
+          <button type="button" class="filter-btn" data-filter="phase-3">03 · Database</button>
+          <button type="button" class="filter-btn" data-filter="phase-4">04 · Systems &amp; Prep</button>
+        </div>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        No matching modules or section anchors found. Try another keyword!
+      </div>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           PHASE 1: FOUNDATIONS, HTTP, SERVERS & REST APIs
+      ══════════════════════════════════════════════════════════════ -->
+      <section class="phase-section" data-phase="phase-1">
+        <div class="phase-header">
+          <div class="phase-title-wrap">
+            <span class="phase-badge">Phase 01</span>
+            <h2 class="phase-title">Foundations, HTTP, Servers &amp; REST APIs</h2>
+          </div>
+          <span class="phase-desc">Version control, writing your first Express server, CRUD routes, and RESTful design</span>
+        </div>
+
+        <div class="topics-grid">
+          <!-- 01: Git & GitHub -->
+          <article class="topic-card" id="module-01">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">01</span>
+                <div>
+                  <div class="topic-eyebrow">Beginner Friendly Notes · Version Control</div>
+                  <h3 class="topic-title"><a href="git-github-notes.html">Git &amp; GitHub, Explained Simply</a></h3>
+                </div>
+              </div>
+              <a href="git-github-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Everything you need to go from "what is Git" to raising, reviewing, and merging Pull Requests the way real dev teams do — explained with plain words, interactive visuals, and web-development examples.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Git Workflow</span>
+              <span class="topic-tag">Branching &amp; Merging</span>
+              <span class="topic-tag">Pull Requests</span>
+              <span class="topic-tag">Rebase &amp; Reflog</span>
+              <span class="topic-tag">Merge Conflicts</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">23 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="git-github-notes.html#intro"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">Git &amp; GitHub Basics</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#install"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Install &amp; Configure</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#repo"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Repository Basics</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#workflow"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">The Git Workflow</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#commands"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Core Commands</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#files"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">File States &amp; .gitignore</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#remote"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Push, Pull, Clone</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#branching"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">Branching</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#merging"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">Merging</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#stashing"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">Stashing</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#collab"><span class="anchor-chip-num">11</span><span class="anchor-chip-text">Collaboration</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#pr-raise"><span class="anchor-chip-num">12</span><span class="anchor-chip-text">Raising a PR</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#pr-review"><span class="anchor-chip-num">13</span><span class="anchor-chip-text">Reviewing a PR</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#pr-merge"><span class="anchor-chip-num">14</span><span class="anchor-chip-text">Merge &amp; Rejected PRs</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#conflicts"><span class="anchor-chip-num">15</span><span class="anchor-chip-text">Merge Conflicts</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#undo"><span class="anchor-chip-num">16</span><span class="anchor-chip-text">Undo Changes</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#rebase"><span class="anchor-chip-num">17</span><span class="anchor-chip-text">Rebase &amp; Interactive Rebase</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#reflog"><span class="anchor-chip-num">18</span><span class="anchor-chip-text">Reflog — Recovering Work</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#cherry-pick"><span class="anchor-chip-num">19</span><span class="anchor-chip-text">Cherry-Picking Commits</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#fork-rulesets"><span class="anchor-chip-num">20</span><span class="anchor-chip-text">Forking &amp; Branch Rulesets</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#power-tools"><span class="anchor-chip-num">21</span><span class="anchor-chip-text">More Power Tools</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#readme"><span class="anchor-chip-num">22</span><span class="anchor-chip-text">README &amp; Docs</span></a>
+                <a class="anchor-chip" href="git-github-notes.html#practices"><span class="anchor-chip-num">23</span><span class="anchor-chip-text">Best Practices</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 02: HTTP, Servers, Ports & Express.js -->
+          <article class="topic-card" id="module-02">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">02</span>
+                <div>
+                  <div class="topic-eyebrow">Backend Notes · Core Server Engineering</div>
+                  <h3 class="topic-title"><a href="http-express-notes.html">HTTP, Servers, Ports &amp; Express.js</a></h3>
+                </div>
+              </div>
+              <a href="http-express-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              From writing your very first server with Node's raw <code>http</code> module to building a complete CRUD API in Express.js — covering ports, <code>listen()</code>, middleware, <code>express.json()</code>, and all 5 ways data arrives in an API.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Client &amp; Server</span>
+              <span class="topic-tag">HTTP / HTTPS</span>
+              <span class="topic-tag">Ports &amp; listen()</span>
+              <span class="topic-tag">Express.js CRUD</span>
+              <span class="topic-tag">Middleware &amp; express.json()</span>
+              <span class="topic-tag">params · query · body · files</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">17 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="http-express-notes.html#s01"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">What is Backend?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s02"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">What is HTTP?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s03"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Request &amp; Response Cycle</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s04"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">What is a Port?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s05"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">What does listen() do?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s06"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Your First Server</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s07"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Problem with Raw http</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s08"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">What is Express.js?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s09"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">The Same Server in Express</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s10"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">What is CRUD?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s11"><span class="anchor-chip-num">11</span><span class="anchor-chip-text">Complete CRUD API</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s12"><span class="anchor-chip-num">12</span><span class="anchor-chip-text">What is Middleware?</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s13"><span class="anchor-chip-num">13</span><span class="anchor-chip-text">express.json()</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s14"><span class="anchor-chip-num">14</span><span class="anchor-chip-text">5 Ways Data Arrives</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s15"><span class="anchor-chip-num">15</span><span class="anchor-chip-text">Mistakes Everybody Makes</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s16"><span class="anchor-chip-num">16</span><span class="anchor-chip-text">Quick Revision</span></a>
+                <a class="anchor-chip" href="http-express-notes.html#s17"><span class="anchor-chip-num">17</span><span class="anchor-chip-text">Practice Tasks</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 03: REST API Fundamentals -->
+          <article class="topic-card" id="module-03">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">03</span>
+                <div>
+                  <div class="topic-eyebrow">Backend Fundamentals · API Design</div>
+                  <h3 class="topic-title"><a href="rest-api-notes.html">REST API Architecture &amp; Status Codes</a></h3>
+                </div>
+              </div>
+              <a href="rest-api-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Complete notes on Representational State Transfer — resources, representations, HTTP methods (idempotent vs safe), status code families (1xx–5xx), RESTful API design best practices, and 10 core interview questions.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">REST Architecture</span>
+              <span class="topic-tag">Idempotence &amp; Safe Methods</span>
+              <span class="topic-tag">1xx–5xx Status Codes</span>
+              <span class="topic-tag">PUT vs PATCH</span>
+              <span class="topic-tag">10 Interview Q&amp;As</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">10 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="rest-api-notes.html#understanding"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">Understanding REST APIs</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#methods"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">HTTP Methods &amp; Safety</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#status-codes"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">HTTP Status Codes</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#best-practices"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Design Best Practices</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#interview-qa"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Interview Q&amp;A Bank</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#q1"><span class="anchor-chip-num">Q1</span><span class="anchor-chip-text">What is a REST API?</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#q3"><span class="anchor-chip-num">Q3</span><span class="anchor-chip-text">PUT vs PATCH</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#q6"><span class="anchor-chip-num">Q6</span><span class="anchor-chip-text">Idempotent Methods</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#q7"><span class="anchor-chip-num">Q7</span><span class="anchor-chip-text">Safe HTTP Methods</span></a>
+                <a class="anchor-chip" href="rest-api-notes.html#q10"><span class="anchor-chip-num">Q10</span><span class="anchor-chip-text">Handling API Errors</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           PHASE 2: API VALIDATION, AUTHENTICATION & SECURITY
+      ══════════════════════════════════════════════════════════════ -->
+      <section class="phase-section" data-phase="phase-2">
+        <div class="phase-header">
+          <div class="phase-title-wrap">
+            <span class="phase-badge">Phase 02</span>
+            <h2 class="phase-title">API Validation, Authentication &amp; Security</h2>
+          </div>
+          <span class="phase-desc">Guarding req.body, identifying users, hashing secrets, and defending tokens</span>
+        </div>
+
+        <div class="topics-grid">
+          <!-- 04: Express Validator -->
+          <article class="topic-card" id="module-04">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">04</span>
+                <div>
+                  <div class="topic-eyebrow">Backend · Request Validation</div>
+                  <h3 class="topic-title"><a href="express-validator-notes.html">Validation in Express — Never Trust req.body</a></h3>
+                </div>
+              </div>
+              <a href="express-validator-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Why every API needs a check at the door, why Mongoose schemas alone aren't enough, how to build validation by hand, and how express-validator, Zod, and Joi do it cleanly — told through one broken register request.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">express-validator 7.3</span>
+              <span class="topic-tag">Zod 4</span>
+              <span class="topic-tag">Joi 18</span>
+              <span class="topic-tag">Express 5 + Mongoose</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">7 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="express-validator-notes.html#problem"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The Problem</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#val-vs-ver"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Validation vs Verification</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#why-server"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Why Not Just the Schema?</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#manual"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Plain Validation</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#express-validator"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">express-validator</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#zod-joi"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Zod and Joi</span></a>
+                <a class="anchor-chip" href="express-validator-notes.html#full-picture"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">The Full Picture</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 05: Authentication Notes -->
+          <article class="topic-card" id="module-05">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">05</span>
+                <div>
+                  <div class="topic-eyebrow">Cohort · Backend · Session Notes</div>
+                  <h3 class="topic-title"><a href="authentication-notes.html">Authentication 101 — Who Sent This Request?</a></h3>
+                </div>
+              </div>
+              <a href="authentication-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Your server already accepts requests and talks to a database, but every incoming request looks identical. Learn how Authentication vs Authorization works, how JWTs are structured, why we hash passwords with bcrypt, and how to wire up Register, Login, and Auth Middleware.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Authentication</span>
+              <span class="topic-tag">Authorization</span>
+              <span class="topic-tag">JWT</span>
+              <span class="topic-tag">bcrypt</span>
+              <span class="topic-tag">Express + Mongoose</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">16 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="authentication-notes.html#s01"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The Problem</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s02"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Authn vs Authz</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s03"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Validation</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s04"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">The ID Card</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s05"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Inside a JWT</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s06"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">The Payload</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s07"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">The Full Flow</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s08"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">Why We Hash</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s09"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">bcrypt in Practice</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s10"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">Setup</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s11"><span class="anchor-chip-num">11</span><span class="anchor-chip-text">Register Route</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s12"><span class="anchor-chip-num">12</span><span class="anchor-chip-text">Login Route</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s13"><span class="anchor-chip-num">13</span><span class="anchor-chip-text">Auth Middleware</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s14"><span class="anchor-chip-num">14</span><span class="anchor-chip-text">Storing the Token</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s15"><span class="anchor-chip-num">15</span><span class="anchor-chip-text">Common Mistakes</span></a>
+                <a class="anchor-chip" href="authentication-notes.html#s16"><span class="anchor-chip-num">16</span><span class="anchor-chip-text">Recap &amp; Practice</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 06: Access & Refresh Tokens -->
+          <article class="topic-card" id="module-06">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">06</span>
+                <div>
+                  <div class="topic-eyebrow">Backend · Advanced Authentication Security</div>
+                  <h3 class="topic-title"><a href="access-refresh-tokens.html">Access &amp; Refresh Tokens — And the Attacks That Shaped Them</a></h3>
+                </div>
+              </div>
+              <a href="access-refresh-tokens.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Almost every tutorial tells you to keep the access token in memory and the refresh token in an httpOnly cookie. Very few tell you which attack (XSS vs CSRF) each half is answering, how token rotation &amp; reuse detection work, or where loopholes still remain.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">JWT</span>
+              <span class="topic-tag">XSS Defense</span>
+              <span class="topic-tag">CSRF Defense</span>
+              <span class="topic-tag">Token Rotation</span>
+              <span class="topic-tag">Reuse Detection</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">9 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="access-refresh-tokens.html#s1"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">Why Tokens Exist</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s2"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">One Token, Two Bad Homes</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s3"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Attack 1 — XSS</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s4"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Attack 2 — CSRF</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s5"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Split Into Two Tokens</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s6"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Rotation &amp; Reuse Detection</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s7"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Best Practices</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s8"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">The Loopholes</span></a>
+                <a class="anchor-chip" href="access-refresh-tokens.html#s9"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">Closing The Gaps</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           PHASE 3: DATABASE FOUNDATIONS, INDEXING & AGGREGATION
+      ══════════════════════════════════════════════════════════════ -->
+      <section class="phase-section" data-phase="phase-3">
+        <div class="phase-header">
+          <div class="phase-title-wrap">
+            <span class="phase-badge">Phase 03</span>
+            <h2 class="phase-title">Database Foundations, Indexing &amp; Aggregation</h2>
+          </div>
+          <span class="phase-desc">MongoDB Atlas, Mongoose ODM, B+ tree storage engines, and multi-stage pipelines</span>
+        </div>
+
+        <div class="topics-grid">
+          <!-- 07: MongoDB Introduction -->
+          <article class="topic-card" id="module-07">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">07</span>
+                <div>
+                  <div class="topic-eyebrow">Backend Notes · Database Foundations</div>
+                  <h3 class="topic-title"><a href="mongodb-intro-notes.html">MongoDB Introduction — Database, Atlas &amp; Mongoose</a></h3>
+                </div>
+              </div>
+              <a href="mongodb-intro-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              A classroom-friendly introduction from persistent NoSQL databases → MongoDB Atlas on AWS → MongoDB Compass GUI → Mongoose schemas, models, and proper Express application flow.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Collections &amp; Documents</span>
+              <span class="topic-tag">MongoDB Atlas</span>
+              <span class="topic-tag">MongoDB Compass</span>
+              <span class="topic-tag">Mongoose ODM</span>
+              <span class="topic-tag">CRUD Methods</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">8 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s01"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">Database &amp; MongoDB</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s02"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Atlas, AWS &amp; Cluster</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s03"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">MongoDB Compass</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s04"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Mongoose &amp; Connection</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s05"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Proper Application Flow</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s06"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Create Atlas Cluster</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s07"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Connect Node.js</span></a>
+                <a class="anchor-chip" href="mongodb-intro-notes.html#s08"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">Quick Revision</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 08: MongoDB Indexing -->
+          <article class="topic-card" id="module-08">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">08</span>
+                <div>
+                  <div class="topic-eyebrow">Backend · MongoDB · Storage Engines</div>
+                  <h3 class="topic-title"><a href="mongodb-indexing-notes.html">Indexing in MongoDB — Finding One Row in a Crore</a></h3>
+                </div>
+              </div>
+              <a href="mongodb-indexing-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              The problem indexes solve, what an index really looks like on disk, why almost every database reaches for a B+ tree, every MongoDB index type with live step-through animations, and the ESR rule for compound queries.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">B+ Tree Live Demos</span>
+              <span class="topic-tag">11 Index Types</span>
+              <span class="topic-tag">explain("executionStats")</span>
+              <span class="topic-tag">ESR Rule</span>
+              <span class="topic-tag">WiredTiger</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections &amp; Index Types (Direct Jump Links)</span>
+                <span class="anchors-count">21 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#problem"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The Problem</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#what"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">What an Index Is</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#why-bplus"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Why B+ Trees</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#bplus-tree"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">B+ Tree Insert &amp; Delete</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#inside-mongodb"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Inside MongoDB</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#implement"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">createIndex &amp; explain()</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#types"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Every Index Type</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#when"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">What to Use When</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#pitfalls"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">Pitfalls &amp; Performance</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#practice"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">Interview &amp; Practice</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-1"><span class="anchor-chip-num">T1</span><span class="anchor-chip-text">Single Field Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-2"><span class="anchor-chip-num">T2</span><span class="anchor-chip-text">Compound Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-3"><span class="anchor-chip-num">T3</span><span class="anchor-chip-text">Multikey Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-4"><span class="anchor-chip-num">T4</span><span class="anchor-chip-text">Text Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-5"><span class="anchor-chip-num">T5</span><span class="anchor-chip-text">Geospatial Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-6"><span class="anchor-chip-num">T6</span><span class="anchor-chip-text">Hashed Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-7"><span class="anchor-chip-num">T7</span><span class="anchor-chip-text">Unique Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-8"><span class="anchor-chip-num">T8</span><span class="anchor-chip-text">Sparse Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-9"><span class="anchor-chip-num">T9</span><span class="anchor-chip-text">Partial Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-10"><span class="anchor-chip-num">T10</span><span class="anchor-chip-text">TTL Index</span></a>
+                <a class="anchor-chip" href="mongodb-indexing-notes.html#type-11"><span class="anchor-chip-num">T11</span><span class="anchor-chip-text">Wildcard Index</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 09: MongoDB Aggregation Pipeline -->
+          <article class="topic-card" id="module-09">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">09</span>
+                <div>
+                  <div class="topic-eyebrow">Backend Domination · Database Systems</div>
+                  <h3 class="topic-title"><a href="07-mongodb-aggregation-notes.html">MongoDB Aggregation Pipeline</a></h3>
+                </div>
+              </div>
+              <a href="07-mongodb-aggregation-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              You already know find, insert, and update. Now master the pipeline framework that lets MongoDB do the heavy data grouping, joining, bucketing, and transformation work that your JS loops were struggling to do.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">$match &amp; $group</span>
+              <span class="topic-tag">$lookup &amp; $graphLookup</span>
+              <span class="topic-tag">$facet &amp; $bucket</span>
+              <span class="topic-tag">Operators &amp; Accumulators</span>
+              <span class="topic-tag">31 Deep Sections</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">31 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#problem"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The Problem</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#mental-model"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Mental Model</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#match"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">$match</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#group"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">$group</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#project"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">$project</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#sort"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">$sort</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#limit"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">$limit</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#skip"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">$skip</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#unwind"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">$unwind</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#lookup"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">$lookup</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#graphlookup"><span class="anchor-chip-num">11</span><span class="anchor-chip-text">$graphLookup</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#addfields"><span class="anchor-chip-num">12</span><span class="anchor-chip-text">$addFields / $set</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#unset"><span class="anchor-chip-num">13</span><span class="anchor-chip-text">$unset</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#replaceroot"><span class="anchor-chip-num">14</span><span class="anchor-chip-text">$replaceRoot</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#out"><span class="anchor-chip-num">15</span><span class="anchor-chip-text">$out</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#merge"><span class="anchor-chip-num">16</span><span class="anchor-chip-text">$merge</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#count"><span class="anchor-chip-num">17</span><span class="anchor-chip-text">$count</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#sample"><span class="anchor-chip-num">18</span><span class="anchor-chip-text">$sample</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#facet"><span class="anchor-chip-num">19</span><span class="anchor-chip-text">$facet</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#bucket"><span class="anchor-chip-num">20</span><span class="anchor-chip-text">$bucket</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#bucketauto"><span class="anchor-chip-num">21</span><span class="anchor-chip-text">$bucketAuto</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#acc-operators"><span class="anchor-chip-num">22</span><span class="anchor-chip-text">Accumulators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#arith-operators"><span class="anchor-chip-num">23</span><span class="anchor-chip-text">Arithmetic Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#comp-operators"><span class="anchor-chip-num">24</span><span class="anchor-chip-text">Comparison Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#logic-operators"><span class="anchor-chip-num">25</span><span class="anchor-chip-text">Logical Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#string-operators"><span class="anchor-chip-num">26</span><span class="anchor-chip-text">String Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#array-operators"><span class="anchor-chip-num">27</span><span class="anchor-chip-text">Array Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#date-operators"><span class="anchor-chip-num">28</span><span class="anchor-chip-text">Date Operators</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#type-operators"><span class="anchor-chip-num">29</span><span class="anchor-chip-text">Type Conversion</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#var-operators"><span class="anchor-chip-num">30</span><span class="anchor-chip-text">Variables ($let)</span></a>
+                <a class="anchor-chip" href="07-mongodb-aggregation-notes.html#case-studies"><span class="anchor-chip-num">31</span><span class="anchor-chip-text">Combined Pipelines</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════════════
+           PHASE 4: SYSTEM ARCHITECTURE, REAL-TIME, PAYMENTS & INTERVIEW PREP
+      ══════════════════════════════════════════════════════════════ -->
+      <section class="phase-section" data-phase="phase-4">
+        <div class="phase-header">
+          <div class="phase-title-wrap">
+            <span class="phase-badge">Phase 04</span>
+            <h2 class="phase-title">System Architecture, Real-Time, Payments &amp; Interview Prep</h2>
+          </div>
+          <span class="phase-desc">SRS blueprints, WebSockets at scale, Razorpay verification, and 100 MERN questions</span>
+        </div>
+
+        <div class="topics-grid">
+          <!-- 10: URL Shortener SRS -->
+          <article class="topic-card" id="module-10">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">10</span>
+                <div>
+                  <div class="topic-eyebrow">Software Requirements Specification · v1.0</div>
+                  <h3 class="topic-title"><a href="url-shortener-srs.html">URL Shortener: Complete SRS &amp; System Design</a></h3>
+                </div>
+              </div>
+              <a href="url-shortener-srs.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              How do professional engineers scope a product before writing code? Walk through a complete Software Requirements Specification (SRS) for a MERN URL Shortener covering functional &amp; non-functional requirements, data models, API contracts, and build order.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">SRS Blueprint</span>
+              <span class="topic-tag">8 FRs · 6 NFRs</span>
+              <span class="topic-tag">API Contracts</span>
+              <span class="topic-tag">MERN Stack</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">12 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="url-shortener-srs.html#srs"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">What is an SRS?</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#intro"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Introduction</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#flow"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">How It Works</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#fr"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Functional Requirements</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#nfr"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">Non-Functional</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#model"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Data Model</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#api"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">API Specification</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#screen"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">The Screen</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#structure"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">Project Structure</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#order"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">Build Order</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#stretch"><span class="anchor-chip-num">11</span><span class="anchor-chip-text">Stretch Goals</span></a>
+                <a class="anchor-chip" href="url-shortener-srs.html#glossary"><span class="anchor-chip-num">12</span><span class="anchor-chip-text">Glossary</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 11: Socket.IO -->
+          <article class="topic-card" id="module-11">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">11</span>
+                <div>
+                  <div class="topic-eyebrow">Backend · Real-Time Communication</div>
+                  <h3 class="topic-title"><a href="socket-io-notes.html">Real-Time Communication with Socket.IO</a></h3>
+                </div>
+              </div>
+              <a href="socket-io-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Why HTTP alone cannot build a real-time chat app, what Socket.IO adds on top of raw WebSockets, how rooms and events carry data between client and server, and how the Redis Adapter solves multi-server scaling.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Node.js</span>
+              <span class="topic-tag">Express</span>
+              <span class="topic-tag">Socket.IO v4</span>
+              <span class="topic-tag">Rooms &amp; Broadcast</span>
+              <span class="topic-tag">Redis Adapter</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">7 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="socket-io-notes.html#problem"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The Problem</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#solution"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">The Solution</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#implement"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Implementing Socket.IO</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#events"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">What are Events?</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#communicate"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">How Events Communicate</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#middleware"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Middleware</span></a>
+                <a class="anchor-chip" href="socket-io-notes.html#scaling"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Problems While Scaling</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 12: Payment Gateway -->
+          <article class="topic-card" id="module-12">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">12</span>
+                <div>
+                  <div class="topic-eyebrow">Backend Domination · Payment Gateway</div>
+                  <h3 class="topic-title"><a href="payment-gateway-notes.html">Payment Gateway — Who Paid for What?</a></h3>
+                </div>
+              </div>
+              <a href="payment-gateway-notes.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              Two customers, two products, the same ₹499. Before writing any Razorpay code, feel the exact reconciliation problem a payment gateway solves, why a static UPI QR code fails, and trace the full Order → Checkout → HMAC-SHA256 Signature Verification flow.
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">Razorpay</span>
+              <span class="topic-tag">Order Lifecycle</span>
+              <span class="topic-tag">HMAC-SHA256 Verification</span>
+              <span class="topic-tag">Webhooks</span>
+              <span class="topic-tag">Express + MongoDB</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Topic Sections (Direct Jump Links)</span>
+                <span class="anchors-count">10 Sections</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="payment-gateway-notes.html#problem"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">The ₹499 Problem</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#upi-qr"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Why Not a UPI QR?</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#order-first"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">Order First, Pay Second</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#actors"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Who's Who</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#flow"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">The Full Flow</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#create-order"><span class="anchor-chip-num">06</span><span class="anchor-chip-text">Create the Order</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#checkout"><span class="anchor-chip-num">07</span><span class="anchor-chip-text">Open Checkout</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#verify"><span class="anchor-chip-num">08</span><span class="anchor-chip-text">Verify the Signature</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#gotchas"><span class="anchor-chip-num">09</span><span class="anchor-chip-text">When Things Go Wrong</span></a>
+                <a class="anchor-chip" href="payment-gateway-notes.html#recap"><span class="anchor-chip-num">10</span><span class="anchor-chip-text">Recap</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 13: 100 MERN Interview Questions -->
+          <article class="topic-card" id="module-13">
+            <div class="topic-card-top">
+              <div class="topic-meta">
+                <span class="topic-num">13</span>
+                <div>
+                  <div class="topic-eyebrow">Cohort Parting Gift · Capstone Interview Bank</div>
+                  <h3 class="topic-title"><a href="mern-interview-questions.html">100 Essential Interview Questions for MERN Developers</a></h3>
+                </div>
+              </div>
+              <a href="mern-interview-questions.html" class="open-doc-btn">Open Notes <span>→</span></a>
+            </div>
+            <p class="topic-desc">
+              The complete 100-question MERN stack interview bank with an interactive practice checklist across MongoDB (20 Qs), Express.js (20 Qs), React.js (30 Qs), Node.js (20 Qs), and System Design / DevOps (10 Qs).
+            </p>
+            <div class="topic-tags">
+              <span class="topic-tag">MongoDB (20 Qs)</span>
+              <span class="topic-tag">Express.js (20 Qs)</span>
+              <span class="topic-tag">React.js (30 Qs)</span>
+              <span class="topic-tag">Node.js (20 Qs)</span>
+              <span class="topic-tag">System Design &amp; DevOps (10 Qs)</span>
+            </div>
+
+            <div class="anchors-block">
+              <div class="anchors-block-header">
+                <span class="anchors-block-title">Curated Question Categories (Direct Jump Links)</span>
+                <span class="anchors-count">5 Categories · 100 Qs</span>
+              </div>
+              <div class="anchors-grid">
+                <a class="anchor-chip" href="mern-interview-questions.html#mongodb"><span class="anchor-chip-num">01</span><span class="anchor-chip-text">MongoDB (20 Questions)</span></a>
+                <a class="anchor-chip" href="mern-interview-questions.html#expressjs"><span class="anchor-chip-num">02</span><span class="anchor-chip-text">Express.js (20 Questions)</span></a>
+                <a class="anchor-chip" href="mern-interview-questions.html#reactjs"><span class="anchor-chip-num">03</span><span class="anchor-chip-text">React.js (30 Questions)</span></a>
+                <a class="anchor-chip" href="mern-interview-questions.html#nodejs"><span class="anchor-chip-num">04</span><span class="anchor-chip-text">Node.js (20 Questions)</span></a>
+                <a class="anchor-chip" href="mern-interview-questions.html#system-design"><span class="anchor-chip-num">05</span><span class="anchor-chip-text">System Design &amp; DevOps (10)</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <span>Sheryians Coding School · Backend Domination Curriculum Hub</span>
+        <span>13 Modules · Chronological Index</span>
+      </footer>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  const metaScheme = document.querySelector('meta[name="color-scheme"]');
+  const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function getEffectiveTheme() {
+    const saved = localStorage.getItem('color-scheme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    return darkMedia.matches ? 'dark' : 'light';
+  }
+
+  function updateThemeUI() {
+    const current = getEffectiveTheme();
+    themeLabel.textContent = current === 'dark' ? 'Light Mode' : 'Dark Mode';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('color-scheme', next);
+    metaScheme.content = next;
+    document.documentElement.setAttribute('data-theme', next);
+    updateThemeUI();
+  });
+
+  darkMedia.addEventListener('change', updateThemeUI);
+  updateThemeUI();
+
+  // Live Search & Phase Filtering
+  const searchInput = document.getElementById('topicSearch');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const phaseSections = document.querySelectorAll('.phase-section');
+  const emptyState = document.getElementById('emptyState');
+
+  let activePhase = 'all';
+
+  function applyFilters() {
+    const query = searchInput.value.trim().toLowerCase();
+    let totalVisibleCards = 0;
+
+    phaseSections.forEach(section => {
+      const phaseMatch = activePhase === 'all' || section.dataset.phase === activePhase;
+      const cards = section.querySelectorAll('.topic-card');
+      let visibleInSection = 0;
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matchesQuery = !query || text.includes(query);
+        const show = phaseMatch && matchesQuery;
+        card.style.display = show ? '' : 'none';
+        if (show) {
+          visibleInSection++;
+          totalVisibleCards++;
+        }
+      });
+
+      section.style.display = visibleInSection > 0 ? '' : 'none';
+    });
+
+    emptyState.style.display = totalVisibleCards === 0 ? 'block' : 'none';
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activePhase = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  // Active sidebar highlight on scroll
+  const navLinks = document.querySelectorAll('.sidebar .nav-link');
+  const cards = document.querySelectorAll('.topic-card');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -65% 0px' });
+
+  cards.forEach(c => observer.observe(c));
+</script>
+</body>
+</html>

@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<script>
+{
+  const colorScheme = localStorage.getItem("color-scheme");
+  if (colorScheme) {
+    document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+    document.documentElement.setAttribute("data-theme", colorScheme);
+  }
+}
+</script>
+<title>HTTP, Servers, Ports &amp; Express.js — Backend Notes | Sheryians Coding School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design Tokens ── */
+:root {
+  --ink: #0E0F14;
+  --paper: #F5F2EB;
+  --paper2: #EDE9DF;
+  --paper3: #E4DFD3;
+  --rule: #D4CEBC;
+  --muted: #6B6455;
+  --accent: #C84B1F;
+  --accent2: #1A6B4A;
+  --accent3: #1B4587;
+  --gold: #B8860B;
+  --surface: #FFFFFF;
+  --code-bg: #161821;
+  --code-text: #E6E1D6;
+  --nav-bg: #0E0F14;
+  --accent-soft: rgba(200, 75, 31, 0.10);
+  --green-soft: rgba(26, 107, 74, 0.12);
+  --blue-soft: rgba(27, 69, 135, 0.10);
+  --gold-soft: rgba(184, 134, 11, 0.14);
+  --warn-bg: #FEF9EC;
+  --warn-bd: #EDD97A;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #EDE9DF;
+    --paper: #121319;
+    --paper2: #1A1C23;
+    --paper3: #23252E;
+    --rule: #33353F;
+    --muted: #A39B8A;
+    --accent: #E2663B;
+    --accent2: #3FA57A;
+    --accent3: #7EA3E0;
+    --gold: #D9A62E;
+    --surface: #16171E;
+    --nav-bg: #0A0B0F;
+    --accent-soft: rgba(226, 102, 59, 0.14);
+    --green-soft: rgba(63, 165, 122, 0.16);
+    --blue-soft: rgba(126, 163, 224, 0.14);
+    --gold-soft: rgba(217, 166, 46, 0.16);
+    --warn-bg: #29230F;
+    --warn-bd: #5E4F1C;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #EDE9DF;
+  --paper: #121319;
+  --paper2: #1A1C23;
+  --paper3: #23252E;
+  --rule: #33353F;
+  --muted: #A39B8A;
+  --accent: #E2663B;
+  --accent2: #3FA57A;
+  --accent3: #7EA3E0;
+  --gold: #D9A62E;
+  --surface: #16171E;
+  --nav-bg: #0A0B0F;
+  --accent-soft: rgba(226, 102, 59, 0.14);
+  --green-soft: rgba(63, 165, 122, 0.16);
+  --blue-soft: rgba(126, 163, 224, 0.14);
+  --gold-soft: rgba(217, 166, 46, 0.16);
+  --warn-bg: #29230F;
+  --warn-bd: #5E4F1C;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+h1, h2, h3, h4 { text-wrap: balance; margin-top: 0; }
+p, li { text-wrap: pretty; }
+
+/* ── Layout ── */
+.layout-container { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 270px;
+  flex-shrink: 0;
+  background-color: var(--nav-bg);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 28px 0 40px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.main-content {
+  flex: 1;
+  max-width: calc(100% - 270px);
+  padding: 48px 56px 88px;
+}
+.main-inner { max-width: 840px; margin: 0 auto; }
+
+/* ── Sidebar ── */
+.nav-brand { padding: 0 24px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px; }
+.nav-brand .logo { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 800; color: #fff; }
+.nav-brand .logo .accent-dot { color: #E2663B; }
+.nav-brand .sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; margin-top: 3px; text-transform: uppercase; }
+.nav-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  margin: 16px 0 4px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 24px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.58);
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: all 150ms ease;
+}
+.nav-link:hover { color: #fff; background-color: rgba(255,255,255,0.05); }
+.nav-link.active { color: #fff; border-left-color: #E2663B; background-color: rgba(226,102,59,0.12); }
+.nav-num {
+  width: 20px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: rgba(255,255,255,0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  border-radius: 4px;
+  color: inherit;
+}
+.nav-link:hover .nav-num, .nav-link.active .nav-num { background-color: #E2663B; color: #fff; }
+
+/* ── Hero ── */
+.hero { margin-bottom: 56px; padding-bottom: 36px; border-bottom: 1px solid var(--rule); }
+.hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 14px; font-weight: 600; }
+.hero h1 { font-family: 'Fraunces', serif; font-size: clamp(34px, 4.8vw, 54px); font-weight: 900; color: var(--ink); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 18px; }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 620px; line-height: 1.65; margin: 0 0 22px; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink); background: var(--paper2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 12px; }
+
+/* ── Sections ── */
+.section-block { margin-bottom: 68px; scroll-margin-top: 28px; }
+.section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.section-num-big { font-family: 'Fraunces', serif; font-size: 44px; font-weight: 900; color: var(--accent); line-height: 1; user-select: none; opacity: 0.85; }
+.section-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.2; margin: 0; }
+.section-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; font-family: 'IBM Plex Mono', monospace; }
+h3 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 700; color: var(--ink); margin: 28px 0 12px; }
+p { margin: 0 0 14px; color: var(--ink); }
+:not(pre) > code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: var(--accent);
+  background-color: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── Grids, Tables & Callout Boxes ── */
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 18px 0; }
+.info-card {
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.info-card.good { border-left: 4px solid var(--accent2); }
+.info-card.bad { border-left: 4px solid var(--accent); }
+.info-card-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+.info-card p { font-size: 14px; color: var(--muted); margin: 0; }
+
+.callout {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-left: 4px solid var(--accent3);
+  background-color: var(--paper2);
+}
+.callout.green { border-left-color: var(--accent2); background-color: var(--green-soft); }
+.callout.warn { border-left-color: var(--gold); background-color: var(--warn-bg); border: 1px solid var(--warn-bd); border-left-width: 4px; }
+.callout.danger { border-left-color: var(--accent); background-color: var(--accent-soft); }
+.callout-title { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; color: var(--ink); }
+.callout p { margin: 0; font-size: 14px; }
+
+.data-table-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+table.data-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background-color: var(--paper2);
+  color: var(--muted);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+table.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.data-table tr:last-child td { border-bottom: none; }
+
+/* ── Code Blocks ── */
+pre.code-block {
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  padding: 18px 22px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 1px solid rgba(255,255,255,0.08);
+  color-scheme: dark;
+}
+.code-comment { color: #7C8496; font-style: italic; }
+.code-kw { color: #F4A261; }
+.code-str { color: #8AB17D; }
+.code-fn { color: #5BA4CF; }
+
+/* ── Interactive Playground ── */
+.interactive-widget {
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin: 24px 0;
+}
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.widget-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.sim-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.sim-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  padding: 7px 13px;
+  border-radius: 7px;
+  border: 1px solid var(--rule);
+  background: var(--paper2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.sim-btn:hover, .sim-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.sim-output {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 13px 16px;
+  margin-bottom: 10px;
+}
+
+.site-footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main-content { max-width: 100%; padding: 32px 20px 64px; }
+}
+
+/* === SHERYIANS HUB NAV INJECTION === */
+.hub-back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 24px 16px;
+  padding: 8px 13px;
+  background: rgba(200, 75, 31, 0.14);
+  border: 1px solid rgba(200, 75, 31, 0.38);
+  border-radius: 8px;
+  color: #FFFFFF !important;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none !important;
+  letter-spacing: 0.04em;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+.hub-back-pill:hover {
+  background: rgba(200, 75, 31, 0.28);
+  border-color: #E2663B;
+  transform: translateX(-2px);
+}
+.hub-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule, #D4CEBC);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+}
+.hub-top-bar a {
+  color: var(--accent, #C84B1F);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hub-top-bar a:hover {
+  text-decoration: underline;
+}
+.hub-top-meta {
+  color: var(--muted, #6B6455);
+}
+.hub-pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 56px 0 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule, #D4CEBC);
+}
+.hub-pager-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 20px;
+  background: var(--paper2, #EDE9DF);
+  border: 1px solid var(--rule, #D4CEBC);
+  border-radius: 10px;
+  text-decoration: none !important;
+  color: var(--ink, #0E0F14) !important;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.hub-pager-card:hover {
+  border-color: var(--accent, #C84B1F);
+  transform: translateY(-2px);
+}
+.hub-pager-card.next {
+  text-align: right;
+}
+.hub-pager-card.center {
+  text-align: center;
+  background: transparent;
+}
+.hub-pager-dir {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent, #C84B1F);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.hub-pager-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink, #0E0F14);
+}
+/* === END SHERYIANS HUB NAV INJECTION === */
+</style>
+</head>
+<body>
+
+<div class="layout-container">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <nav class="sidebar" aria-label="Sections">
+    <div class="nav-brand">
+      <div class="logo">HTTP<span class="accent-dot">.</span>Express</div>
+      <div class="sub">Sheryians Coding School</div>
+    </div>
+<!-- HUB-BACK-PILL --><a href="index.html#module-02" class="hub-back-pill">← Curriculum Hub · 02/13</a><!-- /HUB-BACK-PILL -->
+
+    <div class="nav-group-label">Foundations</div>
+    <a href="#s01" class="nav-link active"><span class="nav-num">01</span>What is Backend?</a>
+    <a href="#s02" class="nav-link"><span class="nav-num">02</span>What is HTTP?</a>
+    <a href="#s03" class="nav-link"><span class="nav-num">03</span>Request &amp; Response</a>
+    <a href="#s04" class="nav-link"><span class="nav-num">04</span>What is a Port?</a>
+    <a href="#s05" class="nav-link"><span class="nav-num">05</span>What does listen() do?</a>
+
+    <div class="nav-group-label">Raw Node vs Express</div>
+    <a href="#s06" class="nav-link"><span class="nav-num">06</span>Your First Server</a>
+    <a href="#s07" class="nav-link"><span class="nav-num">07</span>Problem with Raw http</a>
+    <a href="#s08" class="nav-link"><span class="nav-num">08</span>What is Express.js?</a>
+    <a href="#s09" class="nav-link"><span class="nav-num">09</span>Server in Express</a>
+
+    <div class="nav-group-label">CRUD &amp; Middleware</div>
+    <a href="#s10" class="nav-link"><span class="nav-num">10</span>What is CRUD?</a>
+    <a href="#s11" class="nav-link"><span class="nav-num">11</span>Complete CRUD API</a>
+    <a href="#s12" class="nav-link"><span class="nav-num">12</span>What is Middleware?</a>
+    <a href="#s13" class="nav-link"><span class="nav-num">13</span>express.json()</a>
+    <a href="#s14" class="nav-link"><span class="nav-num">14</span>5 Ways Data Arrives</a>
+
+    <div class="nav-group-label">Mastery</div>
+    <a href="#s15" class="nav-link"><span class="nav-num">15</span>Common Mistakes</a>
+    <a href="#s16" class="nav-link"><span class="nav-num">16</span>Quick Revision</a>
+    <a href="#s17" class="nav-link"><span class="nav-num">17</span>Practice Tasks</a>
+  </nav>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main-content">
+    <div class="main-inner">
+
+      <!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-02">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 02 of 13 · HTTP, Servers & Express.js</span><a href="rest-api-notes.html">Next: 03 · REST API Fundamentals →</a></div><!-- /HUB-TOP-BAR -->
+<header class="hero">
+        <div class="hero-eyebrow">Backend Notes · Core Module</div>
+        <h1>HTTP, Servers, Ports &amp; <em>Express.js</em></h1>
+        <p class="hero-desc">
+          From writing your very first server to building a complete CRUD API — explained in plain, simple language with interactive request simulators.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">Client &amp; Server</span>
+          <span class="hero-tag">HTTP / HTTPS</span>
+          <span class="hero-tag">Ports &amp; listen()</span>
+          <span class="hero-tag">Raw http module</span>
+          <span class="hero-tag">Express.js</span>
+          <span class="hero-tag">CRUD APIs</span>
+          <span class="hero-tag">Middleware</span>
+          <span class="hero-tag">express.json()</span>
+          <span class="hero-tag">params / query / body / files</span>
+        </div>
+      </header>
+
+      <!-- SECTION 01 -->
+      <section class="section-block" id="s01">
+        <div class="section-header">
+          <span class="section-num-big">01</span>
+          <div>
+            <h2 class="section-title">First things first — what is backend?</h2>
+            <div class="section-subtitle">Client vs Server &amp; the apartment building analogy</div>
+          </div>
+        </div>
+        <p>
+          When you open Instagram, you see photos, likes, and comments. None of that is already stored on your phone. Your phone <strong>asks another computer</strong> for it, and that computer <strong>sends it back</strong>.
+        </p>
+        <div class="two-col">
+          <div class="info-card">
+            <div class="info-card-title">Client</div>
+            <p>The one who <strong>asks</strong>. Your browser, a mobile app, or a tool like Postman.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">Server</div>
+            <p>The one who <strong>gives</strong>. A program that stays switched on and keeps listening.</p>
+          </div>
+        </div>
+        <p><strong>Backend</strong> is the code that runs on the server. That is exactly what you are learning to write now.</p>
+
+        <div class="callout green">
+          <div class="callout-title">The apartment building analogy — remember this one</div>
+          <p>It will come back again and again throughout these notes.</p>
+        </div>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Real World</th><th>Tech World</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Address of a building</td><td><strong>IP address</strong></td></tr>
+              <tr><td>Flat number inside that building</td><td><strong>Port</strong></td></tr>
+              <tr><td>The person sitting inside that flat</td><td><strong>Server program</strong></td></tr>
+              <tr><td>Sitting near the door, waiting for the bell</td><td><code>listen()</code></td></tr>
+              <tr><td>Ringing the bell and asking for something</td><td><strong>Request</strong></td></tr>
+              <tr><td>The person handing the thing back to you</td><td><strong>Response</strong></td></tr>
+              <tr><td>The common language both of you speak</td><td><strong>HTTP</strong></td></tr>
+              <tr><td>Talking through a sealed envelope</td><td><strong>HTTPS</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="section-block" id="s02">
+        <div class="section-header">
+          <span class="section-num-big">02</span>
+          <div>
+            <h2 class="section-title">What is HTTP?</h2>
+            <div class="section-subtitle">HyperText Transfer Protocol &amp; Statelessness</div>
+          </div>
+        </div>
+        <p><strong>HTTP</strong> stands for <strong>HyperText Transfer Protocol</strong>. The word <strong>protocol</strong> simply means <strong>a set of rules</strong>.</p>
+        <p>Imagine walking into a shop and saying, "One packet of biscuits, please." The shopkeeper understands you because both of you speak the same language. In the exact same way, the client and the server need one <strong>fixed language</strong> to talk in. That language is HTTP.</p>
+        <p>The rules of HTTP decide:</p>
+        <ul>
+          <li>What format a request must be sent in</li>
+          <li>What format the response will come back in</li>
+          <li>Which action uses which method — <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code></li>
+          <li>How the server tells you whether the job succeeded — the <strong>status code</strong></li>
+        </ul>
+
+        <div class="callout">
+          <div class="callout-title">HTTP is stateless</div>
+          <p>The server <strong>does not remember</strong> what you asked for last time. Every request is treated as a completely fresh conversation. That is why you have to send your identity (a token) along with every single request. This will make much more sense when you reach the login and JWT topic.</p>
+        </div>
+
+        <h3>HTTP vs HTTPS (HTTPS = HTTP + Secure)</h3>
+        <div class="two-col">
+          <div class="info-card bad">
+            <div class="info-card-title">HTTP (Postcard)</div>
+            <p>Data travels as <strong>plain text</strong>. Anyone sitting in the middle — a hacker, or the owner of the WiFi you are using — can read your password clearly.</p>
+          </div>
+          <div class="info-card good">
+            <div class="info-card-title">HTTPS (Sealed Envelope)</div>
+            <p>The same data travels <strong>encrypted</strong>, that is, locked. Anyone in the middle sees only meaningless symbols.</p>
+          </div>
+        </div>
+        <p>Every real website today runs on HTTPS. While developing on your own laptop (<code>localhost</code>), plain HTTP is perfectly fine.</p>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="section-block" id="s03">
+        <div class="section-header">
+          <span class="section-num-big">03</span>
+          <div>
+            <h2 class="section-title">Request and response — the full cycle</h2>
+            <div class="section-subtitle">Anatomy of HTTP messages and status code families</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="info-card">
+            <div class="info-card-title">A request has 4 parts</div>
+            <ol style="padding-left:18px; margin:0; font-size:14px;">
+              <li><strong>Method</strong> — what to do (<code>GET</code> / <code>POST</code> / <code>PUT</code> / <code>DELETE</code>)</li>
+              <li><strong>URL</strong> — on which resource (<code>/users</code>, <code>/users/5</code>)</li>
+              <li><strong>Headers</strong> — extra information (token, content-type)</li>
+              <li><strong>Body</strong> — the actual data (only in POST and PUT)</li>
+            </ol>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">A response has 3 parts</div>
+            <ol style="padding-left:18px; margin:0; font-size:14px;">
+              <li><strong>Status code</strong> — did the job succeed or not</li>
+              <li><strong>Headers</strong> — information about the response</li>
+              <li><strong>Body</strong> — the actual data (JSON or HTML)</li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>Status codes — an easy way to remember them</h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Range</th><th>Meaning</th><th>Common Codes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>2xx</code></td><td>Everything went fine</td><td><code>200 OK</code> · <code>201 Created</code></td></tr>
+              <tr><td><code>3xx</code></td><td>Go somewhere else</td><td><code>301</code> · <code>302 Redirect</code></td></tr>
+              <tr><td><code>4xx</code></td><td>The <strong>client</strong> made a mistake</td><td><code>400 Bad Request</code> · <code>401 Unauthorized</code> · <code>404 Not Found</code></td></tr>
+              <tr><td><code>5xx</code></td><td>The <strong>server</strong> made a mistake</td><td><code>500 Internal Server Error</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout green">
+          <div class="callout-title">Remember it in one line</div>
+          <p><strong>4xx means you messed up. 5xx means I (the server) messed up.</strong></p>
+        </div>
+      </section>
+
+      <!-- SECTION 04 -->
+      <section class="section-block" id="s04">
+        <div class="section-header">
+          <span class="section-num-big">04</span>
+          <div>
+            <h2 class="section-title">What is a port, and why do we need it?</h2>
+            <div class="section-subtitle">0 to 65535 doors on your machine</div>
+          </div>
+        </div>
+        <p>Many programs can run on your computer at the same time — a React app, a backend server, a database. So when a request arrives at your computer, how does the computer know <strong>who it is meant for</strong>? A <strong>port</strong> solves exactly this confusion.</p>
+        <p><code>http://localhost:4567</code> literally means: go to <strong>this same computer</strong> (<code>127.0.0.1</code>), and knock on the door of <strong>flat number 4567</strong>.</p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Port</th><th>Used By</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>80</code></td><td>Default for HTTP</td></tr>
+              <tr><td><code>443</code></td><td>Default for HTTPS</td></tr>
+              <tr><td><code>27017</code></td><td>MongoDB</td></tr>
+              <tr><td><code>3000 / 5000 / 8080</code></td><td>Development servers (by convention)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <div class="callout-title">Two important points</div>
+          <p>1. Ports <strong>0 to 1023</strong> are reserved for the system — pick any number <strong>above 3000</strong> for your projects.<br>
+          2. Since 80 and 443 are defaults, you never have to type a port when visiting <code>https://google.com</code> — the browser adds <code>:443</code> automatically.</p>
+        </div>
+
+        <div class="callout warn">
+          <div class="callout-title">An error you will definitely see</div>
+          <p><code>EADDRINUSE: address already in use</code> — It means somebody already lives in that flat. Either close the old terminal (<code>Ctrl + C</code>) or use a different port.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 05 -->
+      <section class="section-block" id="s05">
+        <div class="section-header">
+          <span class="section-num-big">05</span>
+          <div>
+            <h2 class="section-title">What does <code>listen()</code> actually do?</h2>
+            <div class="section-subtitle">Raising the shop shutter and keeping the event loop alive</div>
+          </div>
+        </div>
+        <p>Simply <strong>creating</strong> a server does nothing on its own. Opening a shop is not enough — you also have to raise the shutter.</p>
+        <p><code>server.listen(4567)</code> means: <em>"I am now sitting at the door numbered 4567. From this moment on, I will keep listening for anyone who rings the bell."</em></p>
+        <div class="callout">
+          <div class="callout-title">One thing you should notice</div>
+          <p>Once <code>listen()</code> runs, the program <strong>does not exit</strong>. A normal JavaScript file prints something and quits immediately, but a server file keeps running — because it is waiting. To stop it, press <strong>Ctrl + C</strong> in the terminal.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 06 -->
+      <section class="section-block" id="s06">
+        <div class="section-header">
+          <span class="section-num-big">06</span>
+          <div>
+            <h2 class="section-title">Your first server — line by line</h2>
+            <div class="section-subtitle">Using Node's built-in http module</div>
+          </div>
+        </div>
+        <pre class="code-block">const http = require("http");
+const PORT = 4567;
+
+const server = http.createServer((req, res) => {
+  console.log("hello i m server"); // prints in YOUR terminal, not browser!
+  res.end("ok mene tumhari baat sun li");
+});
+
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});</pre>
+        <ul>
+          <li><code>require("http")</code> — Fetches Node's built-in HTTP module (no <code>npm install</code> needed).</li>
+          <li><code>http.createServer((req, res) => { ... })</code> — Runs once for <strong>every request</strong> that arrives. <code>req</code> holds what the client sent; <code>res</code> sends the answer back.</li>
+          <li><code>res.end(...)</code> — Sends the response and <strong>closes</strong> the conversation. One request gets exactly one response.</li>
+        </ul>
+      </section>
+
+      <!-- SECTION 07 -->
+      <section class="section-block" id="s07">
+        <div class="section-header">
+          <span class="section-num-big">07</span>
+          <div>
+            <h2 class="section-title">What is the problem with the raw <code>http</code> module?</h2>
+            <div class="section-subtitle">Why every backend developer switched to a framework</div>
+          </div>
+        </div>
+        <pre class="code-block">const server = http.createServer((req, res) => {
+  if (req.url === "/" && req.method === "GET") {
+    res.end("Home page");
+  } else if (req.url === "/users" && req.method === "POST") {
+    let raw = "";
+    req.on("data", (chunk) => { raw += chunk; });
+    req.on("end", () => {
+      const body = JSON.parse(raw); // parse chunks by hand!
+      users.push(body);
+      res.writeHead(201);
+      res.end("User created");
+    });
+  } else {
+    res.writeHead(404);
+    res.end("Not found");
+  }
+});</pre>
+        <div class="step-card"><strong>1. Manual routing:</strong> One <code>if-else</code> branch per route. 50 routes = 50 unreadable branches.</div>
+        <div class="step-card"><strong>2. Manual body chunking:</strong> JSON arrives in small stream chunks; you have to join them and call <code>JSON.parse</code> manually.</div>
+        <div class="step-card"><strong>3. No dynamic URLs:</strong> Extracting <code>5</code> out of <code>/users/5</code> requires manual string slicing.</div>
+        <div class="step-card"><strong>4. No middleware system:</strong> Common checks like auth have to be copy-pasted everywhere.</div>
+      </section>
+
+      <!-- SECTION 08 -->
+      <section class="section-block" id="s08">
+        <div class="section-header">
+          <span class="section-num-big">08</span>
+          <div>
+            <h2 class="section-title">What is Express.js?</h2>
+            <div class="section-subtitle">A minimal framework built on top of Node's http module</div>
+          </div>
+        </div>
+        <p>Express does nothing magical — internally it still uses Node's <code>http</code> module. If raw <code>http</code> is kneading dough and rolling rotis by hand, <strong>Express is a roti-maker machine</strong>: work that took 100 lines now takes 10.</p>
+        <pre class="code-block">npm init -y
+npm install express</pre>
+        <ul>
+          <li>Clean routing with <code>app.get()</code>, <code>app.post()</code>, <code>app.put()</code>, <code>app.delete()</code></li>
+          <li>Dynamic route parameters out of the box (<code>/users/:id</code>)</li>
+          <li>A composable middleware pipeline</li>
+          <li>Ready-made helpers: <code>res.json()</code>, <code>res.status()</code>, <code>res.send()</code></li>
+          <li>Single-line body parsing via <code>express.json()</code></li>
+        </ul>
+      </section>
+
+      <!-- SECTION 09 -->
+      <section class="section-block" id="s09">
+        <div class="section-header">
+          <span class="section-num-big">09</span>
+          <div>
+            <h2 class="section-title">The same server in Express</h2>
+            <div class="section-subtitle">Clean routes and response helpers</div>
+          </div>
+        </div>
+        <pre class="code-block">const express = require("express");
+const app = express();
+const PORT = 4567;
+
+app.get("/", (req, res) => {
+  res.send("Hello from Express");
+});
+
+app.get("/about", (req, res) => {
+  res.send("This is the about page");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});</pre>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Method on <code>res</code></th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>res.send("hi")</code></td><td>Send anything — a string, object, or array</td></tr>
+              <tr><td><code>res.json({ a: 1 })</code></td><td>Send JSON — <strong>use this when building an API</strong></td></tr>
+              <tr><td><code>res.status(404)</code></td><td>Set status code (must chain onto <code>.json()</code> or <code>.send()</code>)</td></tr>
+              <tr><td><code>res.status(201).json({...})</code></td><td>Set status code and send JSON together — <strong>the most common pattern</strong></td></tr>
+              <tr><td><code>res.end()</code></td><td>Close the response without sending any data</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 10 -->
+      <section class="section-block" id="s10">
+        <div class="section-header">
+          <span class="section-num-big">10</span>
+          <div>
+            <h2 class="section-title">What is CRUD?</h2>
+            <div class="section-subtitle">Create · Read · Update · Delete</div>
+          </div>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Letter</th><th>Operation</th><th>HTTP Method</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>C</strong></td><td>Create — make something new</td><td><code>POST</code></td><td>A new user signs up</td></tr>
+              <tr><td><strong>R</strong></td><td>Read — view something</td><td><code>GET</code></td><td>Opening a profile</td></tr>
+              <tr><td><strong>U</strong></td><td>Update — change something</td><td><code>PUT</code> / <code>PATCH</code></td><td>Editing your bio</td></tr>
+              <tr><td><strong>D</strong></td><td>Delete — remove something</td><td><code>DELETE</code></td><td>Deleting an account</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout warn">
+          <div class="callout-title">Never put the action inside the URL</div>
+          <p><strong>Wrong:</strong> <code>/getUsers</code> · <code>/createUser</code> · <code>/deleteUser</code><br>
+          <strong>Right:</strong> <code>GET /users</code> · <code>POST /users</code> · <code>DELETE /users/5</code><br>
+          A URL should name the <strong>thing (a plural noun)</strong>, never the action (a verb).</p>
+        </div>
+      </section>
+
+      <!-- SECTION 11 -->
+      <section class="section-block" id="s11">
+        <div class="section-header">
+          <span class="section-num-big">11</span>
+          <div>
+            <h2 class="section-title">A complete CRUD API with user data</h2>
+            <div class="section-subtitle">Interactive Express Route Simulator + Full Code</div>
+          </div>
+        </div>
+
+        <!-- Interactive CRUD Playground -->
+        <div class="interactive-widget">
+          <div class="widget-header">
+            <strong>Interactive Express CRUD Simulator</strong>
+            <span class="widget-badge">Live Request Tracer</span>
+          </div>
+          <div class="sim-controls">
+            <button type="button" class="sim-btn active" data-route="getAll">GET /users</button>
+            <button type="button" class="sim-btn" data-route="getOne">GET /users/2</button>
+            <button type="button" class="sim-btn" data-route="post">POST /users</button>
+            <button type="button" class="sim-btn" data-route="put">PUT /users/1</button>
+            <button type="button" class="sim-btn" data-route="delete">DELETE /users/99</button>
+          </div>
+          <div class="sim-output" id="crudSimOutput">// Click any route above to trace how Express extracts input, validates, and responds.
+Status: 200 OK
+Response JSON:
+[
+  { "id": 1, "name": "Aarav", "age": 19, "city": "Indore" },
+  { "id": 2, "name": "Priya", "age": 20, "city": "Bhopal" }
+]</div>
+        </div>
+
+        <pre class="code-block">const express = require("express");
+const app = express();
+
+app.use(express.json()); // needed to read req.body - keep ABOVE routes!
+
+let users = [
+  { id: 1, name: "Aarav", age: 19, city: "Indore" },
+  { id: 2, name: "Priya", age: 20, city: "Bhopal" },
+];
+
+// READ ALL
+app.get("/users", (req, res) => {
+  res.status(200).json(users);
+});
+
+// READ ONE
+app.get("/users/:id", (req, res) => {
+  const id = Number(req.params.id); // string -> number!
+  const user = users.find((u) => u.id === id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.status(200).json(user);
+});
+
+// CREATE
+app.post("/users", (req, res) => {
+  const { name, age, city } = req.body;
+  if (!name || !age) {
+    return res.status(400).json({ message: "name and age are required" });
+  }
+  const newUser = { id: users.length + 1, name, age, city };
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
+
+// UPDATE
+app.put("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) return res.status(404).json({ message: "User not found" });
+  users[index] = { ...users[index], ...req.body, id };
+  res.status(200).json(users[index]);
+});
+
+// DELETE
+app.delete("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) return res.status(404).json({ message: "User not found" });
+  const removed = users.splice(index, 1);
+  res.status(200).json({ message: "Deleted", user: removed[0] });
+});
+
+app.listen(4567, () => console.log("Server ready on 4567"));</pre>
+
+        <div class="callout green">
+          <div class="callout-title">Every route follows the same 4-step pattern</div>
+          <p>1. Extract the input (<code>params</code> / <code>body</code> / <code>query</code>) → 2. Check whether it is valid → 3. Do the actual work → 4. Send a response with the right status code (using <code>return</code> on early errors so you never trigger <code>Cannot set headers after they are sent to the client</code>).</p>
+        </div>
+      </section>
+
+      <!-- SECTION 12 -->
+      <section class="section-block" id="s12">
+        <div class="section-header">
+          <span class="section-num-big">12</span>
+          <div>
+            <h2 class="section-title">What is middleware?</h2>
+            <div class="section-subtitle">The college gate guard standing between request and route handler</div>
+          </div>
+        </div>
+        <p><strong>Middleware</strong> is a function that runs <strong>in between</strong> — after the request arrives from the client, but <strong>before</strong> it reaches your route.</p>
+        <pre class="code-block">app.use((req, res, next) => {
+  console.log(req.method, req.url, new Date().toLocaleTimeString());
+  next(); // &lt;- forget this and the request hangs forever!
+});</pre>
+        <ul>
+          <li><code>req</code> — the request object (you can attach data like <code>req.user</code>).</li>
+          <li><code>res</code> — the response object (you can stop the request early with an error response).</li>
+          <li><code>next()</code> — <em>"I am done, pass it along to the next function."</em></li>
+        </ul>
+      </section>
+
+      <!-- SECTION 13 -->
+      <section class="section-block" id="s13">
+        <div class="section-header">
+          <span class="section-num-big">13</span>
+          <div>
+            <h2 class="section-title"><code>express.json()</code> — the middleware you cannot skip</h2>
+            <div class="section-subtitle">Turning raw network byte chunks into req.body</div>
+          </div>
+        </div>
+        <p>Without <code>app.use(express.json())</code>, <code>req.body</code> is <code>undefined</code> because JSON travels over the network as raw byte chunks. <code>express.json()</code> joins the chunks, checks for <code>Content-Type: application/json</code>, runs <code>JSON.parse()</code>, and populates <code>req.body</code>.</p>
+        <pre class="code-block">app.use(express.json());                         // for JSON payloads
+app.use(express.urlencoded({ extended: true })); // for HTML &lt;form&gt; payloads</pre>
+      </section>
+
+      <!-- SECTION 14 -->
+      <section class="section-block" id="s14">
+        <div class="section-header">
+          <span class="section-num-big">14</span>
+          <div>
+            <h2 class="section-title">Every way of receiving data in an API</h2>
+            <div class="section-subtitle">params · query · body · headers · files (multer)</div>
+          </div>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Source</th><th>Visible in URL?</th><th>Used With</th><th>Used For</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>req.params</code></td><td>Yes (<code>/users/:id</code>)</td><td>All methods</td><td><strong>Which</strong> specific item to act on — the ID</td></tr>
+              <tr><td><code>req.query</code></td><td>Yes (<code>?city=Indore</code>)</td><td>Mostly GET</td><td>Filtering, search, sorting, pagination</td></tr>
+              <tr><td><code>req.body</code></td><td><strong>No</strong></td><td>POST, PUT, PATCH</td><td>The actual payload — forms, JSON, passwords</td></tr>
+              <tr><td><code>req.headers</code></td><td><strong>No</strong></td><td>All methods</td><td>Tokens (<code>authorization</code>), content-type, metadata</td></tr>
+              <tr><td><code>req.file</code> / <code>req.files</code></td><td><strong>No</strong></td><td>POST, PUT</td><td>Uploading images, PDFs, videos via <code>multer</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout green">
+          <div class="callout-title">Params vs Query — confusion cleared</div>
+          <p><code>/users/7</code> → "give me <strong>this specific user</strong>" (<strong>params identify</strong>)<br>
+          <code>/users?city=Indore</code> → "give me <strong>users like this</strong>" (<strong>query filters</strong>)</p>
+        </div>
+      </section>
+
+      <!-- SECTION 15 -->
+      <section class="section-block" id="s15">
+        <div class="section-header">
+          <span class="section-num-big">15</span>
+          <div>
+            <h2 class="section-title">Mistakes everybody makes</h2>
+            <div class="section-subtitle">7 classic bugs and how to fix them in seconds</div>
+          </div>
+        </div>
+        <div class="step-card"><strong>1. Writing <code>express.json()</code> below the routes</strong> → <code>req.body</code> comes out <code>undefined</code>.</div>
+        <div class="step-card"><strong>2. Treating <code>req.params.id</code> as a number</strong> → Always wrap in <code>Number(req.params.id)</code>.</div>
+        <div class="step-card"><strong>3. Forgetting <code>return</code> before <code>res.status(404).json()</code></strong> → Triggers <em>"Cannot set headers after they are sent"</em>.</div>
+        <div class="step-card"><strong>4. Forgetting <code>next()</code> inside middleware</strong> → The request hangs forever.</div>
+        <div class="step-card"><strong>5. Getting <code>EADDRINUSE</code></strong> → Close the old terminal or change the port.</div>
+        <div class="step-card"><strong>6. Selecting Text instead of JSON in Postman</strong> → Body arrives empty.</div>
+        <div class="step-card"><strong>7. Not restarting the server after code changes</strong> → Use <code>nodemon server.js</code>.</div>
+      </section>
+
+      <!-- SECTION 16 -->
+      <section class="section-block" id="s16">
+        <div class="section-header">
+          <span class="section-num-big">16</span>
+          <div>
+            <h2 class="section-title">Quick revision</h2>
+            <div class="section-subtitle">10 one-liners to lock in the mental model</div>
+          </div>
+        </div>
+        <div class="step-card">The <strong>client</strong> asks, the <strong>server</strong> answers.</div>
+        <div class="step-card"><strong>HTTP</strong> is the shared language · <strong>HTTPS</strong> is that same language, locked.</div>
+        <div class="step-card"><strong>IP</strong> is the building address · <strong>Port</strong> is the flat number.</div>
+        <div class="step-card"><code>listen()</code> means sitting at the door, waiting for the bell.</div>
+        <div class="step-card"><strong>Express</strong> wraps raw <code>http</code> so 100 lines become 10.</div>
+        <div class="step-card"><strong>CRUD</strong> maps to <code>POST</code> · <code>GET</code> · <code>PUT</code> · <code>DELETE</code>.</div>
+        <div class="step-card"><strong>Middleware</strong> is the guard standing in between — <code>next()</code> is mandatory.</div>
+        <div class="step-card">Data arrives from 5 places: <strong>params · query · body · headers · files</strong>.</div>
+      </section>
+
+      <!-- SECTION 17 -->
+      <section class="section-block" id="s17">
+        <div class="section-header">
+          <span class="section-num-big">17</span>
+          <div>
+            <h2 class="section-title">Practice tasks</h2>
+            <div class="section-subtitle">Build and test in Postman</div>
+          </div>
+        </div>
+        <ol>
+          <li>Build a server using raw <code>http</code> where <code>/</code> returns "Home" and <code>/about</code> returns "About".</li>
+          <li>Now build the exact same thing in Express and compare how clean it feels.</li>
+          <li>Build a full CRUD API for <strong>books</strong> with fields <code>id</code>, <code>title</code>, <code>author</code>, and <code>price</code>.</li>
+          <li>Make <code>GET /books?author=Chetan</code> work — filter using <code>req.query</code>.</li>
+          <li>Add validation to <code>POST /books</code> — if <code>title</code> is missing, respond with <code>400</code>.</li>
+          <li>Write a middleware that logs the method, URL, and time of every request.</li>
+          <li>Hit <code>GET /books/9999</code> and confirm that you get a <code>404</code>.</li>
+          <li><strong>Bonus:</strong> Build <code>GET /books?page=1&amp;limit=5</code> — basic pagination.</li>
+        </ol>
+      </section>
+
+      <!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="git-github-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (01)</span><span class="hub-pager-title">Git & GitHub</span></a><a href="index.html#module-02" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="rest-api-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (03) →</span><span class="hub-pager-title">REST API Fundamentals</span></a></nav><!-- /HUB-PAGER -->
+<footer class="site-footer">
+        <span>Sheryians Coding School · HTTP, Servers, Ports &amp; Express.js</span>
+        <span>Node.js · HTTP · Express · CRUD</span>
+      </footer>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const traces = {
+    getAll: `// Route matched: app.get("/users")
+1. Input extracted : none needed
+2. Validation      : passed
+3. Status Code     : 200 OK
+4. Response Body   :
+[
+  { "id": 1, "name": "Aarav", "age": 19, "city": "Indore" },
+  { "id": 2, "name": "Priya", "age": 20, "city": "Bhopal" }
+]`,
+    getOne: `// Route matched: app.get("/users/:id")
+1. Input extracted : req.params.id = "2" -> Number("2") = 2
+2. Lookup          : users.find(u => u.id === 2) -> found!
+3. Status Code     : 200 OK
+4. Response Body   :
+{ "id": 2, "name": "Priya", "age": 20, "city": "Bhopal" }`,
+    post: `// Route matched: app.post("/users")
+1. Middleware      : express.json() parsed raw stream into req.body
+2. Input extracted : { "name": "Riyaan", "age": 21, "city": "Mumbai" }
+3. Status Code     : 201 Created
+4. Response Body   :
+{ "id": 3, "name": "Riyaan", "age": 21, "city": "Mumbai" }`,
+    put: `// Route matched: app.put("/users/:id")
+1. Input extracted : req.params.id = 1, req.body = { "city": "Pune" }
+2. Merge           : { ...users[0], ...req.body, id: 1 } (id locked!)
+3. Status Code     : 200 OK
+4. Response Body   :
+{ "id": 1, "name": "Aarav", "age": 19, "city": "Pune" }`,
+    delete: `// Route matched: app.delete("/users/:id")
+1. Input extracted : req.params.id = "99" -> Number("99") = 99
+2. Lookup          : users.findIndex(u => u.id === 99) -> -1 (Not Found!)
+3. Early return    : return res.status(404).json(...)
+4. Response Body   :
+{ "message": "User not found" }`
+  };
+
+  document.querySelectorAll('.sim-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('crudSimOutput').textContent = traces[btn.dataset.route];
+    });
+  });
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.sidebar .nav-link');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -65% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

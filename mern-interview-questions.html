@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<script>
+{
+  const colorScheme = localStorage.getItem("color-scheme");
+  if (colorScheme) {
+    document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+    document.documentElement.setAttribute("data-theme", colorScheme);
+  }
+}
+</script>
+<title>100 Essential MERN Interview Questions &amp; Answers — Sheryians Coding School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0E0F14;
+  --paper: #F5F2EB;
+  --paper2: #EDE9DF;
+  --paper3: #E4DFD3;
+  --rule: #D4CEBC;
+  --muted: #6B6455;
+  --accent: #C84B1F;
+  --accent2: #1A6B4A;
+  --accent3: #1B4587;
+  --gold: #B8860B;
+  --surface: #FFFFFF;
+  --code-bg: #161821;
+  --code-text: #E6E1D6;
+  --nav-bg: #0E0F14;
+  --accent-soft: rgba(200, 75, 31, 0.10);
+  --green-soft: rgba(26, 107, 74, 0.12);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #EDE9DF;
+    --paper: #121319;
+    --paper2: #1A1C23;
+    --paper3: #23252E;
+    --rule: #33353F;
+    --muted: #A39B8A;
+    --accent: #E2663B;
+    --accent2: #3FA57A;
+    --accent3: #7EA3E0;
+    --gold: #D9A62E;
+    --surface: #16171E;
+    --nav-bg: #0A0B0F;
+    --accent-soft: rgba(226, 102, 59, 0.14);
+    --green-soft: rgba(63, 165, 122, 0.16);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #EDE9DF;
+  --paper: #121319;
+  --paper2: #1A1C23;
+  --paper3: #23252E;
+  --rule: #33353F;
+  --muted: #A39B8A;
+  --accent: #E2663B;
+  --accent2: #3FA57A;
+  --accent3: #7EA3E0;
+  --gold: #D9A62E;
+  --surface: #16171E;
+  --nav-bg: #0A0B0F;
+  --accent-soft: rgba(226, 102, 59, 0.14);
+  --green-soft: rgba(63, 165, 122, 0.16);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+h1, h2, h3 { text-wrap: balance; margin-top: 0; }
+p, li { text-wrap: pretty; }
+
+.layout-container { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 270px;
+  flex-shrink: 0;
+  background-color: var(--nav-bg);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 28px 0 40px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.main-content {
+  flex: 1;
+  max-width: calc(100% - 270px);
+  padding: 48px 56px 88px;
+}
+.main-inner { max-width: 880px; margin: 0 auto; }
+
+.nav-brand { padding: 0 24px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px; }
+.nav-brand .logo { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 800; color: #fff; }
+.nav-brand .logo .accent-dot { color: #E2663B; }
+.nav-brand .sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; margin-top: 3px; text-transform: uppercase; }
+.nav-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 24px;
+  margin: 16px 0 4px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 24px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.58);
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: all 150ms ease;
+}
+.nav-link:hover { color: #fff; background-color: rgba(255,255,255,0.05); }
+.nav-link.active { color: #fff; border-left-color: #E2663B; background-color: rgba(226,102,59,0.12); }
+.nav-num {
+  width: 22px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: rgba(255,255,255,0.08);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  border-radius: 4px;
+}
+.nav-link:hover .nav-num, .nav-link.active .nav-num { background-color: #E2663B; color: #fff; }
+
+.hero { margin-bottom: 36px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+.hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 14px; font-weight: 600; }
+.hero h1 { font-family: 'Fraunces', serif; font-size: clamp(34px, 4.8vw, 54px); font-weight: 900; color: var(--ink); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 18px; }
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 660px; line-height: 1.65; margin: 0 0 22px; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink); background: var(--paper2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 12px; }
+
+/* Progress & Filter Bar */
+.prep-bar {
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  box-shadow: 0 8px 24px -12px rgba(0,0,0,0.18);
+}
+.search-q {
+  flex: 1;
+  min-width: 220px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-family: inherit;
+  outline: none;
+}
+.search-q:focus { border-color: var(--accent); }
+.prep-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.action-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.action-btn:hover { border-color: var(--accent); color: var(--accent); }
+.progress-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent2);
+  background: var(--green-soft);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.section-block { margin-bottom: 56px; scroll-margin-top: 84px; }
+.section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+.section-num-big { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 900; color: var(--accent); line-height: 1; }
+.section-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--ink); margin: 0; }
+.section-subtitle { font-size: 12.5px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 3px; }
+
+/* Expandable Dropdown Cards (<details>) */
+.q-list { display: flex; flex-direction: column; gap: 10px; }
+details.q-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+details.q-card:hover {
+  border-color: var(--accent);
+}
+details.q-card[open] {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px -12px rgba(0,0,0,0.12);
+}
+details.q-card.done {
+  border-left: 4px solid var(--accent2);
+}
+summary.q-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  cursor: pointer;
+  user-select: none;
+}
+summary.q-summary::-webkit-details-marker { display: none; }
+.q-check {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--accent2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.q-idx {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+details.q-card.done .q-idx {
+  color: var(--accent2);
+  background: var(--green-soft);
+}
+.q-text {
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 600;
+  flex: 1;
+}
+.q-chevron {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 200ms ease, color 150ms ease;
+  flex-shrink: 0;
+  background: var(--paper2);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+details.q-card[open] .q-chevron {
+  transform: rotate(180deg);
+  background: var(--accent);
+  color: #fff;
+}
+.q-answer {
+  padding: 16px 20px 18px 48px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 14.5px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.q-answer p { margin: 0 0 10px; }
+.q-answer p:last-child { margin-bottom: 0; }
+.q-answer code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.q-answer pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 10px 0 0;
+  line-height: 1.55;
+  color-scheme: dark;
+}
+
+.site-footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* === SHERYIANS HUB NAV INJECTION === */
+.hub-back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 24px 16px;
+  padding: 8px 13px;
+  background: rgba(200, 75, 31, 0.14);
+  border: 1px solid rgba(200, 75, 31, 0.38);
+  border-radius: 8px;
+  color: #FFFFFF !important;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none !important;
+  letter-spacing: 0.04em;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+.hub-back-pill:hover {
+  background: rgba(200, 75, 31, 0.28);
+  border-color: #E2663B;
+  transform: translateX(-2px);
+}
+.hub-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule, #D4CEBC);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+}
+.hub-top-bar a {
+  color: var(--accent, #C84B1F);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hub-top-bar a:hover { text-decoration: underline; }
+.hub-top-meta { color: var(--muted, #6B6455); }
+.hub-pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 56px 0 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule, #D4CEBC);
+}
+.hub-pager-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 20px;
+  background: var(--paper2, #EDE9DF);
+  border: 1px solid var(--rule, #D4CEBC);
+  border-radius: 10px;
+  text-decoration: none !important;
+  color: var(--ink, #0E0F14) !important;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.hub-pager-card:hover {
+  border-color: var(--accent, #C84B1F);
+  transform: translateY(-2px);
+}
+.hub-pager-card.next { text-align: right; }
+.hub-pager-card.center { text-align: center; background: transparent; }
+.hub-pager-dir {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent, #C84B1F);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.hub-pager-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink, #0E0F14);
+}
+/* === END SHERYIANS HUB NAV INJECTION === */
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main-content { max-width: 100%; padding: 32px 20px 64px; }
+  .q-answer { padding-left: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout-container">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <nav class="sidebar" aria-label="Categories">
+    <div class="nav-brand">
+      <div class="logo">MERN<span class="accent-dot">.</span>100</div>
+      <div class="sub">Sheryians Coding School</div>
+    </div>
+    <!-- HUB-BACK-PILL --><a href="index.html#module-13" class="hub-back-pill">← Curriculum Hub · 13/13</a><!-- /HUB-BACK-PILL -->
+
+    <div class="nav-group-label">Question &amp; Answer Banks</div>
+    <a href="#mongodb" class="nav-link active"><span class="nav-num">01</span>MongoDB (20 Q&amp;As)</a>
+    <a href="#expressjs" class="nav-link"><span class="nav-num">02</span>Express.js (20 Q&amp;As)</a>
+    <a href="#reactjs" class="nav-link"><span class="nav-num">03</span>React.js (30 Q&amp;As)</a>
+    <a href="#nodejs" class="nav-link"><span class="nav-num">04</span>Node.js (20 Q&amp;As)</a>
+    <a href="#system-design" class="nav-link"><span class="nav-num">05</span>System Design &amp; DevOps (10)</a>
+  </nav>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main-content">
+    <div class="main-inner">
+
+      <!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-13">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 13 of 13 · 100 MERN Interview Qs</span><a href="index.html">All 13 Modules Complete ✓</a></div><!-- /HUB-TOP-BAR -->
+
+      <header class="hero">
+        <div class="hero-eyebrow">Prepared by Sheryians · Cohort 1.0 Parting Gift</div>
+        <h1>100 Essential Interview Questions &amp; Answers for <em>MERN Developers</em></h1>
+        <p class="hero-desc">
+          Every question below is an interactive dropdown card with a concise, interview-ready model answer and code examples. Click any question to reveal its answer, or check the box to track your progress!
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">MongoDB (20 Q&amp;As)</span>
+          <span class="hero-tag">Express.js (20 Q&amp;As)</span>
+          <span class="hero-tag">React.js (30 Q&amp;As)</span>
+          <span class="hero-tag">Node.js (20 Q&amp;As)</span>
+          <span class="hero-tag">System Design &amp; DevOps (10 Q&amp;As)</span>
+        </div>
+      </header>
+
+      <div class="prep-bar">
+        <input type="search" id="qSearch" class="search-q" placeholder="Search questions or answers (e.g. event loop, $lookup, Fiber, JWT, RBAC, streams)...">
+        <div class="prep-actions">
+          <button type="button" class="action-btn" id="expandAllBtn">Expand All Answers</button>
+          <button type="button" class="action-btn" id="collapseAllBtn">Collapse All</button>
+          <span class="progress-pill" id="progressCounter">0 / 100 Practiced</span>
+        </div>
+      </div>
+
+      <!-- 01: MONGODB -->
+      <section class="section-block" id="mongodb">
+        <div class="section-header">
+          <span class="section-num-big">01</span>
+          <div>
+            <h2 class="section-title">MongoDB (20 Questions &amp; Answers)</h2>
+            <div class="section-subtitle">Aggregation, indexing, schema design, transactions &amp; scaling</div>
+          </div>
+        </div>
+        <div class="q-list" id="list-mongodb"></div>
+      </section>
+
+      <!-- 02: EXPRESS.JS -->
+      <section class="section-block" id="expressjs">
+        <div class="section-header">
+          <span class="section-num-big">02</span>
+          <div>
+            <h2 class="section-title">Express.js (20 Questions &amp; Answers)</h2>
+            <div class="section-subtitle">Middleware, request flow, security, validation &amp; architecture</div>
+          </div>
+        </div>
+        <div class="q-list" id="list-expressjs"></div>
+      </section>
+
+      <!-- 03: REACT.JS -->
+      <section class="section-block" id="reactjs">
+        <div class="section-header">
+          <span class="section-num-big">03</span>
+          <div>
+            <h2 class="section-title">React.js (30 Questions &amp; Answers)</h2>
+            <div class="section-subtitle">Reconciliation, hooks, SSR, state management &amp; optimization</div>
+          </div>
+        </div>
+        <div class="q-list" id="list-reactjs"></div>
+      </section>
+
+      <!-- 04: NODE.JS -->
+      <section class="section-block" id="nodejs">
+        <div class="section-header">
+          <span class="section-num-big">04</span>
+          <div>
+            <h2 class="section-title">Node.js (20 Questions &amp; Answers)</h2>
+            <div class="section-subtitle">Event loop, streams, clustering, worker threads &amp; memory leaks</div>
+          </div>
+        </div>
+        <div class="q-list" id="list-nodejs"></div>
+      </section>
+
+      <!-- 05: SYSTEM DESIGN / DEVOPS -->
+      <section class="section-block" id="system-design">
+        <div class="section-header">
+          <span class="section-num-big">05</span>
+          <div>
+            <h2 class="section-title">System Design / DevOps (10 Questions &amp; Answers)</h2>
+            <div class="section-subtitle">Scalability, cloud deployment, CI/CD, RBAC &amp; microservices</div>
+          </div>
+        </div>
+        <div class="q-list" id="list-sysdesign"></div>
+      </section>
+
+      <!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="payment-gateway-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (12)</span><span class="hub-pager-title">Payment Gateway</span></a><a href="index.html#module-13" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="index.html" class="hub-pager-card next"><span class="hub-pager-dir">Path Completed! →</span><span class="hub-pager-title">Return to Curriculum Hub</span></a></nav><!-- /HUB-PAGER -->
+
+      <footer class="site-footer">
+        <span>Sheryians Coding School · 100 Essential MERN Interview Questions &amp; Answers</span>
+        <span>Prepared by Sheryians | Cohort 1.0</span>
+      </footer>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+const QA_DATA = {
+  mongodb: [
+    {
+      id: "M01",
+      q: "Explain the aggregation pipeline and its stages.",
+      a: `<p>The <strong>Aggregation Pipeline</strong> is a multi-stage data processing framework in MongoDB where documents pass through a sequence of stages, each transforming the stream of documents before passing them to the next stage.</p>
+<p><strong>Key stages:</strong> <code>$match</code> (filters documents early using indexes), <code>$group</code> (groups by a key and computes accumulators like <code>$sum</code>, <code>$avg</code>), <code>$project</code> (reshapes fields), <code>$lookup</code> (left outer join with another collection), <code>$unwind</code> (deconstructs an array field into separate documents), <code>$sort</code>, <code>$skip</code>, and <code>$limit</code>.</p>
+<pre>db.orders.aggregate([
+  { $match: { status: "paid" } },
+  { $group: { _id: "$userId", totalSpent: { $sum: "$amount" } } },
+  { $sort: { totalSpent: -1 } }
+]);</pre>`
+    },
+    {
+      id: "M02",
+      q: "How does indexing work in MongoDB, and what are compound indexes?",
+      a: `<p>An <strong>index</strong> is a special B+ tree data structure stored on disk/RAM that holds a sorted subset of document fields pointing to their physical storage locations. Without an index, MongoDB performs a <code>COLLSCAN</code> (scanning every document). With an index, it performs an <code>IXSCAN</code> in logarithmic <code>O(log N)</code> time.</p>
+<p>A <strong>Compound Index</strong> indexes multiple fields together in a single B+ tree (e.g. <code>db.users.createIndex({ city: 1, age: -1 })</code>). It supports queries on the full index or any <strong>left-prefix</strong> (such as <code>{ city }</code>), and follows the <strong>ESR (Equality, Sort, Range)</strong> rule for optimal design.</p>`
+    },
+    {
+      id: "M03",
+      q: "What’s the difference between find(), findOne(), and aggregate()?",
+      a: `<p><code>find()</code> returns a <strong>cursor</strong> to all matching documents and supports basic filtering, projection, sorting, and pagination.</p>
+<p><code>findOne()</code> returns the <strong>first matching document object</strong> directly (or <code>null</code>), stopping scan as soon as 1 match is found.</p>
+<p><code>aggregate()</code> runs a multi-stage transformation pipeline capable of grouping, joining (<code>$lookup</code>), array unwinding, bucketing, and computing derived analytics that <code>find()</code> cannot express.</p>`
+    },
+    {
+      id: "M04",
+      q: "How do you optimize MongoDB queries for performance?",
+      a: `<p>1. Run <code>.explain("executionStats")</code> to verify <code>IXSCAN</code> vs <code>COLLSCAN</code> and check <code>totalDocsExamined</code> vs <code>nReturned</code>.<br>
+2. Design compound indexes using the <strong>ESR (Equality → Sort → Range)</strong> rule.<br>
+3. Use <strong>projections</strong> (e.g. <code>.select("name email")</code>) to return only necessary fields and enable <strong>Covered Queries</strong> (<code>PROJECTION_COVERED</code>).<br>
+4. Place <code>$match</code> and <code>$limit</code> as early as possible in aggregation pipelines.<br>
+5. Use <code>.lean()</code> in Mongoose for read-only queries to skip heavy Mongoose Document hydration.</p>`
+    },
+    {
+      id: "M05",
+      q: "What is schema design and how do you model relationships in MongoDB (1:1, 1:N, N:N)?",
+      a: `<p>MongoDB schema design revolves around how your application queries and updates data ("data that is accessed together should be stored together"):</p>
+<p>• <strong>1:1 (One-to-One):</strong> Embed as a sub-document (e.g. <code>user.address</code>) or share the same <code>_id</code> across two collections.<br>
+• <strong>1:Few / 1:N (bounded):</strong> Embed an array of sub-documents (e.g. a user's 3 shipping addresses).<br>
+• <strong>1:Many / 1:Squillions (unbounded):</strong> Store a parent reference (<code>userId: ObjectId</code>) inside the "Many" side (e.g. <code>posts</code> pointing to <code>user._id</code>) to avoid exceeding the 16MB BSON document limit.<br>
+• <strong>N:N (Many-to-Many):</strong> Use an array of ObjectId references on one/both sides or a dedicated join/enrollment collection when relationship metadata is needed.</p>`
+    },
+    {
+      id: "M06",
+      q: "Explain data validation and how to enforce it in MongoDB.",
+      a: `<p>Data validation can be enforced at two levels:</p>
+<p>1. <strong>Application / ODM Level (Mongoose + Zod/Joi):</strong> Define <code>required</code>, <code>min/max</code>, <code>enum</code>, custom validators, and regex rules in your Mongoose Schema before saving.<br>
+2. <strong>Database Engine Level (JSON Schema Validation):</strong> Configure <code>$jsonSchema</code> rules directly on the MongoDB collection using <code>db.createCollection("users", { validator: { $jsonSchema: { ... } } })</code> so even raw driver writes cannot bypass constraints.</p>`
+    },
+    {
+      id: "M07",
+      q: "What are transactions in MongoDB and when would you use them?",
+      a: `<p>Single-document writes in MongoDB are always atomic out of the box. <strong>Multi-document ACID transactions</strong> (via <code>session.startTransaction()</code>) allow you to group operations across multiple documents or collections so that either <strong>all succeed</strong> (<code>commitTransaction</code>) or <strong>all roll back</strong> (<code>abortTransaction</code>).</p>
+<p><strong>When to use:</strong> Financial transfers (debiting one wallet and crediting another), inventory reservation + order creation, or any multi-collection mutation requiring strict all-or-nothing consistency. Requires a Replica Set (MongoDB Atlas provides this by default).</p>`
+    },
+    {
+      id: "M08",
+      q: "What is a capped collection?",
+      a: `<p>A <strong>capped collection</strong> is a fixed-size circular collection in MongoDB that maintains insertion order and automatically overwrites the oldest documents once its byte size or document limit is reached (<code>db.createCollection("logs", { capped: true, size: 10485760, max: 5000 })</code>). Ideal for high-throughput server logs, IoT telemetry, or recent activity caches.</p>`
+    },
+    {
+      id: "M09",
+      q: "How does MongoDB handle concurrency?",
+      a: `<p>MongoDB's <strong>WiredTiger</strong> storage engine uses <strong>document-level locking</strong> combined with <strong>Optimistic Concurrency Control (MVCC — Multi-Version Concurrency Control)</strong>. Multiple readers and writers can modify different documents in the same collection simultaneously without blocking each other. If a write conflict occurs on the exact same document inside a transaction, WiredTiger automatically retries or aborts the conflicting transaction.</p>`
+    },
+    {
+      id: "M10",
+      q: "Explain change streams in MongoDB.",
+      a: `<p><strong>Change Streams</strong> (<code>collection.watch()</code>) allow applications to subscribe to real-time data changes (inserts, updates, deletes) on a collection, database, or deployment without polling. Internally powered by the replica set <strong>oplog</strong>, they are resumeable via resume tokens and great for triggering real-time Socket.IO notifications, cache invalidation, or search index syncing.</p>`
+    },
+    {
+      id: "M11",
+      q: "What’s the difference between populate() and $lookup?",
+      a: `<p><code>populate()</code> is a <strong>Mongoose client-side convenience</strong>: it executes the initial query and then fires a second separate <code>find({ _id: { $in: [...] } })</code> query from Node.js and stitches the results in memory.</p>
+<p><code>$lookup</code> is a <strong>native MongoDB aggregation stage</strong> that performs the join directly inside the database server in a single round-trip, allowing you to filter or sort by joined fields inside the same pipeline.</p>`
+    },
+    {
+      id: "M12",
+      q: "How do you perform pagination in MongoDB efficiently?",
+      a: `<p><strong>1. Offset Pagination (<code>skip + limit</code>):</strong> Easy for small datasets, but slow at deep pages (e.g. <code>skip(100000)</code> still forces MongoDB to walk 100,000 index entries).<br>
+<strong>2. Cursor / Keyset Pagination (Production standard):</strong> Query using an indexed field like <code>_id</code> or <code>createdAt</code> from the last seen item: <code>Model.find({ _id: { $lt: lastSeenId } }).sort({ _id: -1 }).limit(20)</code>. Uses the B+ tree directly in <code>O(log N)</code> regardless of page depth.</p>`
+    },
+    {
+      id: "M13",
+      q: "What is the use of the $facet stage?",
+      a: `<p><code>$facet</code> runs <strong>multiple sub-pipelines in parallel</strong> within a single aggregation stage on the same set of input documents. It is commonly used on e-commerce search pages to fetch paginated product results, total count, price buckets, and brand counts in a single database query.</p>`
+    },
+    {
+      id: "M14",
+      q: "How does MongoDB handle horizontal scaling?",
+      a: `<p>MongoDB scales horizontally via <strong>Sharding</strong>, which partitions data across multiple server clusters (shards) using a <strong>Shard Key</strong> (either ranged sharding or hashed sharding). A <code>mongos</code> query router directs client queries to the specific shard holding the target data, while config servers track chunk metadata.</p>`
+    },
+    {
+      id: "M15",
+      q: "Difference between embedded documents vs. referenced documents.",
+      a: `<p><strong>Embedded (Denormalized):</strong> Related data is nested inside a single document. Pros: 1-query atomic reads/writes, zero joins, high read speed. Cons: 16MB document size cap, data duplication if shared.</p>
+<p><strong>Referenced (Normalized):</strong> Stores an <code>ObjectId</code> pointing to another collection. Pros: No duplication, unbounded growth, independent updates. Cons: Requires <code>$lookup</code> or <code>populate()</code> to fetch together.</p>`
+    },
+    {
+      id: "M16",
+      q: "How do you back up and restore a MongoDB database?",
+      a: `<p>1. <strong>CLI Binary Tools:</strong> Use <code>mongodump --uri="..." --out=./backup</code> to export BSON dumps and <code>mongorestore</code> to restore them.<br>
+2. <strong>Cloud Managed:</strong> In MongoDB Atlas, enable automated continuous cloud backups with Point-in-Time (PIT) recovery snapshots.</p>`
+    },
+    {
+      id: "M17",
+      q: "How can you enforce uniqueness on a field?",
+      a: `<p>Create a <strong>Unique Index</strong> on the field: <code>db.users.createIndex({ email: 1 }, { unique: true })</code> (or set <code>unique: true</code> in your Mongoose schema, which triggers <code>createIndex</code>). Note: <code>unique: true</code> in Mongoose is not a validator — it relies on MongoDB's unique B+ tree index and throws error code <code>11000</code> on duplicates.</p>`
+    },
+    {
+      id: "M18",
+      q: "What are MongoDB Atlas Triggers?",
+      a: `<p><strong>Atlas Triggers</strong> are serverless event-driven functions managed in MongoDB Atlas that execute automatically in response to <strong>Database Events</strong> (via Change Streams on insert/update/delete), <strong>Authentication Events</strong>, or <strong>Scheduled Cron Timers</strong>.</p>`
+    },
+    {
+      id: "M19",
+      q: "What is TTL indexing and when would you use it?",
+      a: `<p>A <strong>TTL (Time-To-Live) Index</strong> is a special single-field index on a Date field that automatically deletes documents after a specified number of seconds: <code>db.otp.createIndex({ createdAt: 1 }, { expireAfterSeconds: 300 })</code>. Perfect for expiring OTPs, password reset tokens, session records, and temporary logs.</p>`
+    },
+    {
+      id: "M20",
+      q: "How do you monitor and profile MongoDB queries?",
+      a: `<p>1. Use <code>.explain("executionStats")</code> on individual queries to inspect execution time, keys examined, and stage plans.<br>
+2. Enable the <strong>Database Profiler</strong> (<code>db.setProfilingLevel(1, { slowms: 100 })</code>) to log queries slower than 100ms into <code>system.profile</code>.<br>
+3. Use <strong>MongoDB Atlas Performance Advisor</strong>, <code>mongostat</code>, and <code>mongotop</code> in production.</p>`
+    }
+  ],
+  expressjs: [
+    {
+      id: "E01",
+      q: "Explain middleware and the types of middleware in Express.",
+      a: `<p><strong>Middleware</strong> is a function with access to <code>(req, res, next)</code> that executes in the pipeline between receiving a request and sending a response. The 5 types in Express are:<br>
+1. <strong>Application-level:</strong> <code>app.use(...)</code><br>
+2. <strong>Router-level:</strong> <code>router.use(...)</code><br>
+3. <strong>Built-in:</strong> <code>express.json()</code>, <code>express.urlencoded()</code>, <code>express.static()</code><br>
+4. <strong>Third-party:</strong> <code>cors</code>, <code>helmet</code>, <code>morgan</code>, <code>cookie-parser</code>, <code>multer</code><br>
+5. <strong>Error-handling:</strong> Special 4-argument signature <code>(err, req, res, next) => {}</code>.</p>`
+    },
+    {
+      id: "E02",
+      q: "How does request and response flow in Express?",
+      a: `<p>When an HTTP request hits the server, Express runs it top-to-bottom through registered global middleware (CORS, body parsers, loggers) → matches the route path &amp; HTTP method → runs route-specific middleware (e.g. auth guard, validator) → executes the controller handler → sends the response via <code>res.status().json()</code> (or forwards any thrown error to the global error-handling middleware).</p>`
+    },
+    {
+      id: "E03",
+      q: "What is the use of next() in Express?",
+      a: `<p><code>next()</code> passes control to the next middleware or route handler in the stack. If you forget to call <code>next()</code> (and don't send a response), the client request hangs forever. Calling <code>next(err)</code> with an argument skips all normal middlewares and jumps straight to the 4-parameter error-handling middleware.</p>`
+    },
+    {
+      id: "E04",
+      q: "How do you implement global error handling?",
+      a: `<p>Define a 4-parameter middleware <strong>at the very bottom</strong> of your Express app (after all routes). In Express 5, rejected promises in <code>async</code> handlers automatically forward to this error handler:</p>
+<pre>app.use((err, req, res, next) => {
+  const status = err.statusCode || 500;
+  res.status(status).json({
+    success: false,
+    message: err.message || "Internal Server Error"
+  });
+});</pre>`
+    },
+    {
+      id: "E05",
+      q: "How do you structure a scalable Express application?",
+      a: `<p>Use a layered <strong>Controller–Service–Model (or Feature-based)</strong> folder structure:<br>
+• <code>src/routes/</code> — Express Router definitions &amp; validation chains<br>
+• <code>src/controllers/</code> — Extract <code>req</code> data, call services, return <code>res</code><br>
+• <code>src/services/</code> — Pure business logic &amp; external integrations<br>
+• <code>src/models/</code> — Mongoose schemas<br>
+• <code>src/middlewares/</code> — Auth, RBAC, error handlers<br>
+• <code>src/config/</code> — Validated environment variables &amp; DB connection.</p>`
+    },
+    {
+      id: "E06",
+      q: "How do you secure an Express API (rate limiting, headers)?",
+      a: `<p>1. Use <code>helmet()</code> to set secure HTTP headers (CSP, HSTS, X-Frame-Options).<br>
+2. Use <code>express-rate-limit</code> to prevent brute-force &amp; DDoS attacks on login/OTP endpoints.<br>
+3. Restrict <code>cors({ origin: allowedOrigins, credentials: true })</code>.<br>
+4. Validate &amp; sanitize all inputs with Zod / <code>express-validator</code>.<br>
+5. Limit payload sizes: <code>express.json({ limit: "10kb" })</code>.</p>`
+    },
+    {
+      id: "E07",
+      q: "Explain route parameter vs. query parameter.",
+      a: `<p><strong>Route Parameters (<code>req.params</code>):</strong> Part of the URL path itself (<code>/users/:id</code> → <code>/users/42</code>). Used to <strong>identify a specific resource</strong>.<br>
+<strong>Query Parameters (<code>req.query</code>):</strong> Key-value pairs after <code>?</code> (<code>/users?city=Indore&amp;limit=10</code>). Used to <strong>filter, sort, search, or paginate</strong> a collection. Note: Both arrive as strings!</p>`
+    },
+    {
+      id: "E08",
+      q: "What’s the role of CORS in Express and how to configure it?",
+      a: `<p><strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser security mechanism that blocks frontend JS on Origin A (<code>http://localhost:5173</code>) from reading responses from Origin B (<code>http://localhost:4000</code>) unless the server explicitly sends <code>Access-Control-Allow-Origin</code> headers.</p>
+<pre>app.use(cors({
+  origin: "https://myapp.com",
+  credentials: true // required when sending httpOnly cookies
+}));</pre>`
+    },
+    {
+      id: "E09",
+      q: "How do you handle file uploads?",
+      a: `<p>Files are sent as <code>multipart/form-data</code> and parsed using middleware like <strong>Multer</strong> (<code>upload.single("avatar")</code> or <code>upload.array("photos", 5)</code>), which populates <code>req.file</code> or <code>req.files</code>. In production, stream or upload files to cloud object storage (AWS S3, Cloudinary) rather than keeping them on ephemeral local server disks.</p>`
+    },
+    {
+      id: "E10",
+      q: "How would you implement logging in Express?",
+      a: `<p>Use <strong>Morgan</strong> as HTTP request logging middleware paired with a structured JSON logger like <strong>Pino</strong> or <strong>Winston</strong> for application/error logs, including request correlation IDs and timestamps.</p>`
+    },
+    {
+      id: "E11",
+      q: "What is the use of express-validator?",
+      a: `<p><code>express-validator</code> provides declarative middleware chains (like <code>body("email").isEmail().normalizeEmail()</code>) to validate and sanitize incoming <code>req.body</code>, <code>req.query</code>, and <code>req.params</code> before your controller runs, collecting errors via <code>validationResult(req)</code>.</p>`
+    },
+    {
+      id: "E12",
+      q: "How do you prevent SQL/NoSQL injection in Express?",
+      a: `<p>In MongoDB, if an attacker sends <code>{ "email": { "$gt": "" } }</code> in <code>req.body</code>, an unvalidated <code>User.findOne({ email: req.body.email })</code> will match the first user! Prevent this by validating that inputs are primitive strings using <strong>Zod / Joi / express-validator</strong> or sanitizing keys starting with <code>$</code> using <code>express-mongo-sanitize</code>.</p>`
+    },
+    {
+      id: "E13",
+      q: "What is Helmet and how does it help with security?",
+      a: `<p><strong>Helmet</strong> (<code>app.use(helmet())</code>) sets ~15 security-related HTTP response headers automatically: it hides <code>X-Powered-By: Express</code>, sets <code>Strict-Transport-Security</code> (HSTS), prevents clickjacking via <code>X-Frame-Options</code>, prevents MIME sniffing (<code>X-Content-Type-Options: nosniff</code>), and configures <code>Content-Security-Policy</code>.</p>`
+    },
+    {
+      id: "E14",
+      q: "How do you handle role-based authorization in Express?",
+      a: `<p>Chain an authorization middleware after your JWT authentication middleware:</p>
+<pre>const authorize = (...roles) => (req, res, next) => {
+  if (!roles.includes(req.user.role)) {
+    return res.status(403).json({ message: "Forbidden: insufficient role" });
+  }
+  next();
+};
+app.delete("/users/:id", authenticate, authorize("admin"), deleteUser);</pre>`
+    },
+    {
+      id: "E15",
+      q: "What are virtual routes and when are they useful?",
+      a: `<p>Modular route prefixes mounted via <code>express.Router()</code> (e.g., <code>app.use("/api/v1/users", userRouter)</code>) or virtual path prefixes for static assets (<code>app.use("/static", express.static("public"))</code>) decouple URL namespaces from physical file paths and allow clean API versioning.</p>`
+    },
+    {
+      id: "E16",
+      q: "Difference between synchronous and asynchronous middleware.",
+      a: `<p>Synchronous middleware executes immediately on the call stack and calls <code>next()</code>; any thrown error is caught by Express automatically. Asynchronous middleware (using <code>async/await</code> for DB or token lookups) returns a Promise. In Express 4 you needed a <code>try/catch</code> calling <code>next(err)</code> (or <code>express-async-handler</code>); in Express 5, rejected promises automatically call <code>next(err)</code>.</p>`
+    },
+    {
+      id: "E17",
+      q: "How do you optimize performance in Express apps?",
+      a: `<p>Enable Gzip/Brotli response compression (<code>compression</code> middleware), cache frequent reads in Redis, use connection pooling for MongoDB, avoid synchronous blocking functions (<code>fs.readFileSync</code>, heavy crypto on main thread), set <code>NODE_ENV=production</code>, and run behind an Nginx reverse proxy or Node Cluster / PM2.</p>`
+    },
+    {
+      id: "E18",
+      q: "What is a proxy in Express and how to set it?",
+      a: `<p>When your Express app runs behind a load balancer or reverse proxy (Nginx, Cloudflare, Render, AWS ALB), client IPs and HTTPS protocol info are forwarded in <code>X-Forwarded-For</code> and <code>X-Forwarded-Proto</code> headers. Setting <code>app.set("trust proxy", 1)</code> tells Express to trust those headers so <code>req.ip</code> and <code>secure: true</code> cookies work properly.</p>`
+    },
+    {
+      id: "E19",
+      q: "What is the use of app.locals and res.locals?",
+      a: `<p><code>app.locals</code> is an object that persists throughout the entire lifetime of the application (useful for global config or app-wide constants). <code>res.locals</code> is scoped strictly to a <strong>single request–response cycle</strong>, making it ideal for passing authenticated user data or request IDs from middleware to downstream handlers/views.</p>`
+    },
+    {
+      id: "E20",
+      q: "How can you implement request tracing in Express?",
+      a: `<p>Attach a unique UUID (<code>crypto.randomUUID()</code>) to every incoming request (or read <code>req.headers["x-request-id"]</code>), store it in <code>AsyncLocalStorage</code> (from Node's <code>async_hooks</code>) and <code>res.setHeader("X-Request-Id", id)</code>, and automatically include that ID in every log line emitted during that request.</p>`
+    }
+  ],
+  reactjs: [
+    {
+      id: "R01",
+      q: "Explain the React reconciliation algorithm.",
+      a: `<p><strong>Reconciliation</strong> is the diffing algorithm React uses (powered by the <strong>Fiber</strong> architecture) to compare the new Virtual DOM tree with the previous Fiber tree and compute the minimal set of real DOM mutations in <code>O(N)</code> time. It relies on two heuristics: elements of different types produce different trees, and developer-supplied <code>key</code> props identify stable child elements across renders.</p>`
+    },
+    {
+      id: "R02",
+      q: "What are controlled vs. uncontrolled components?",
+      a: `<p><strong>Controlled Component:</strong> Form input value is driven by React state (<code>value={state}</code> + <code>onChange={e => setState(e.target.value)}</code>). React is the single source of truth.<br>
+<strong>Uncontrolled Component:</strong> Form data is managed by the DOM itself and read when needed using a <code>ref</code> (<code>inputRef.current.value</code>) or <code>FormData</code> on submit.</p>`
+    },
+    {
+      id: "R03",
+      q: "How does React handle context and why use it?",
+      a: `<p>The <strong>Context API</strong> (<code>createContext</code> + <code>useContext</code>) lets a parent component provide data (theme, authenticated user, locale) to any component deep in the subtree without passing props manually at every level (solving prop drilling).</p>`
+    },
+    {
+      id: "R04",
+      q: "What are the common performance optimization techniques in React?",
+      a: `<p>1. Keep state as local as possible so updates don't re-render the whole tree.<br>
+2. Memoize expensive child subtrees with <code>React.memo</code>, calculations with <code>useMemo</code>, and callbacks with <code>useCallback</code> (or use the React Compiler).<br>
+3. Code-split routes with <code>React.lazy()</code> and <code>&lt;Suspense&gt;</code>.<br>
+4. Virtualize long lists (<code>react-window</code> / TanStack Virtual).</p>`
+    },
+    {
+      id: "R05",
+      q: "How does memoization work in React (React.memo, useMemo)?",
+      a: `<p><code>React.memo(Component)</code> is a higher-order wrapper that skips re-rendering a child component if its props are shallowly equal to the previous render.<br>
+<code>useMemo(() => compute(a, b), [a, b])</code> caches the <strong>returned value</strong> of an expensive calculation between renders until a dependency changes.<br>
+<code>useCallback(fn, deps)</code> caches the <strong>function reference</strong> itself.</p>`
+    },
+    {
+      id: "R06",
+      q: "How does React handle batching of state updates?",
+      a: `<p>Since React 18, <strong>Automatic Batching</strong> groups multiple <code>setState</code> calls (even inside <code>setTimeout</code>, Promises, and native event handlers) into a <strong>single re-render</strong> at the end of the microtask, preventing unnecessary intermediate renders.</p>`
+    },
+    {
+      id: "R07",
+      q: "What are custom hooks and when would you use them?",
+      a: `<p>A <strong>Custom Hook</strong> is a JavaScript function starting with <code>use</code> (e.g. <code>useFetch</code>, <code>useDebounce</code>, <code>useLocalStorage</code>) that encapsulates and shares stateful logic across multiple components while keeping each component's state completely isolated.</p>`
+    },
+    {
+      id: "R08",
+      q: "Explain lazy loading and code splitting in React.",
+      a: `<p>Instead of shipping one massive JavaScript bundle on initial load, <code>const Dashboard = React.lazy(() => import("./Dashboard"))</code> wrapped in <code>&lt;Suspense fallback={&lt;Spinner /&gt;}&gt;</code> splits the code into separate chunks fetched only when the user navigates to that component.</p>`
+    },
+    {
+      id: "R09",
+      q: "What’s the difference between useEffect and useLayoutEffect?",
+      a: `<p><code>useEffect</code> runs <strong>asynchronously after</strong> the browser has painted the screen — ideal for 99% of side effects (data fetching, subscriptions).<br>
+<code>useLayoutEffect</code> runs <strong>synchronously after DOM mutation but before</strong> the browser paints — used when you must measure DOM layout (<code>getBoundingClientRect</code>) and adjust styles without a visual flicker.</p>`
+    },
+    {
+      id: "R10",
+      q: "How does React’s concurrent mode work?",
+      a: `<p><strong>Concurrent Rendering</strong> (enabled by Fiber in React 18+) allows React to interrupt, pause, or abandon a low-priority render (marked via <code>startTransition</code> or <code>useDeferredValue</code>) so high-priority user input (typing, clicking) stays immediately responsive without blocking the main thread.</p>`
+    },
+    {
+      id: "R11",
+      q: "What is the virtual DOM and how does React use it?",
+      a: `<p>The <strong>Virtual DOM</strong> is a lightweight in-memory JavaScript object representation of the UI. On state changes, React creates a new VDOM tree, diffs it against the previous tree via Reconciliation, and batches only the changed attributes/nodes to the real browser DOM.</p>`
+    },
+    {
+      id: "R12",
+      q: "How do you implement SSR (Server-Side Rendering) with React?",
+      a: `<p>Using a framework like <strong>Next.js</strong> or React's <code>renderToPipeableStream</code>, the server executes React components and sends fully rendered HTML to the browser for fast First Contentful Paint (FCP) and SEO, followed by client-side hydration.</p>`
+    },
+    {
+      id: "R13",
+      q: "Difference between lifting state and prop drilling.",
+      a: `<p><strong>Lifting State Up:</strong> Moving shared state to the closest common parent of two sibling components so they stay in sync.<br>
+<strong>Prop Drilling:</strong> Passing props through 4–6 intermediate components that don't use the data themselves just to reach a deeply nested child (solved by Component Composition, Context, or Zustand/Redux).</p>`
+    },
+    {
+      id: "R14",
+      q: "What is suspense in React?",
+      a: `<p><code>&lt;Suspense fallback={...}&gt;</code> lets you declaratively specify a loading state while child components are waiting for an asynchronous resource (such as a lazy-loaded code chunk or a streaming server/data query) to resolve.</p>`
+    },
+    {
+      id: "R15",
+      q: "How do you manage state in large applications (Redux, Context, Zustand)?",
+      a: `<p>Split state by category:<br>
+• <strong>Server / Cache State:</strong> TanStack Query (React Query) or RTK Query.<br>
+• <strong>Global Client UI State:</strong> <strong>Zustand</strong> (minimal store with selector subscriptions) or <strong>Redux Toolkit</strong>.<br>
+• <strong>Low-frequency App Config (Theme/Auth):</strong> React Context.<br>
+• <strong>URL State (Filters/Pagination):</strong> URL search params (<code>useSearchParams</code>).</p>`
+    },
+    {
+      id: "R16",
+      q: "How does hydration work in React with SSR?",
+      a: `<p><strong>Hydration</strong> (<code>hydrateRoot</code>) is the process where client-side React attaches event listeners and internal Fiber state to the static HTML already rendered by the server, turning a static page interactive without re-creating the DOM nodes.</p>`
+    },
+    {
+      id: "R17",
+      q: "How do you secure a React frontend?",
+      a: `<p>React automatically escapes JSX strings to prevent XSS. Additional defenses: never pass unsanitized HTML to <code>dangerouslySetInnerHTML</code> (use DOMPurify), store refresh tokens in <code>httpOnly</code> cookies instead of <code>localStorage</code>, validate URLs before placing in <code>href</code> (block <code>javascript:</code>), and enforce strict CSP headers.</p>`
+    },
+    {
+      id: "R18",
+      q: "Explain error boundaries in React.",
+      a: `<p>An <strong>Error Boundary</strong> is a component (using <code>static getDerivedStateFromError</code> and <code>componentDidCatch</code>, or the <code>react-error-boundary</code> package) that catches runtime JavaScript errors anywhere in its child component tree during rendering and displays a fallback UI instead of crashing the whole app.</p>`
+    },
+    {
+      id: "R19",
+      q: "How does React Router handle dynamic routes?",
+      a: `<p>Define dynamic segments with a colon such as <code>&lt;Route path="/users/:userId" element={&lt;Profile /&gt;} /&gt;</code> and read the dynamic parameter inside the component using the <code>const { userId } = useParams()</code> hook.</p>`
+    },
+    {
+      id: "R20",
+      q: "How do you handle access control (auth-guard) in React?",
+      a: `<p>Create a wrapper <code>&lt;ProtectedRoute&gt;</code> component that checks authentication state/roles and either renders <code>&lt;Outlet /&gt;</code> or redirects to <code>&lt;Navigate to="/login" replace /&gt;</code>. Always remember: frontend route guards are for UX only — real security must be enforced on the backend API!</p>`
+    },
+    {
+      id: "R21",
+      q: "How do you use useReducer and what is it best for?",
+      a: `<p><code>const [state, dispatch] = useReducer(reducer, initialState)</code> manages state transitions through dispatched actions. It is best when state has multiple sub-values that transition together or when the next state depends on complex rules (e.g. multi-step forms or shopping carts).</p>`
+    },
+    {
+      id: "R22",
+      q: "How do you handle WebSocket or real-time data in React?",
+      a: `<p>Initialize the Socket.IO / WebSocket listener inside a <code>useEffect</code>, update state or query cache on incoming events, and <strong>always clean up</strong> (<code>socket.off(...)</code> / <code>socket.disconnect()</code>) in the <code>useEffect</code> return function to prevent duplicate listeners and memory leaks.</p>`
+    },
+    {
+      id: "R23",
+      q: "What is the role of key in React lists?",
+      a: `<p>The <code>key</code> prop gives each element in an array a stable identity across renders so React can match moved, inserted, or deleted items accurately. Using array indexes as keys when the list can reorder/filter causes subtle bugs with component state and input focus.</p>`
+    },
+    {
+      id: "R24",
+      q: "Explain compound components pattern.",
+      a: `<p><strong>Compound Components</strong> (like <code>&lt;Select&gt;&lt;Select.Trigger /&gt;&lt;Select.Content /&gt;&lt;/Select&gt;</code>) share implicit state via an internal Context provided by the parent component, giving consumers flexible, declarative composition without prop overload.</p>`
+    },
+    {
+      id: "R25",
+      q: "How does React DevTools work under the hood?",
+      a: `<p>React DevTools hooks into the global <code>__REACT_DEVTOOLS_GLOBAL_HOOK__</code> object injected before React loads, allowing it to inspect the live Fiber tree, read hooks/props/state, and profile render durations and why each component re-rendered.</p>`
+    },
+    {
+      id: "R26",
+      q: "What is the StrictMode in React and why use it?",
+      a: `<p><code>&lt;React.StrictMode&gt;</code> is a development-only wrapper that intentionally double-invokes component renders and effect mount/unmount cycles to surface impure renders and missing <code>useEffect</code> cleanup functions early.</p>`
+    },
+    {
+      id: "R27",
+      q: "How would you implement theme switching in React?",
+      a: `<p>Use CSS custom properties on <code>:root</code> paired with a <code>data-theme="dark"</code> attribute, initialize from <code>localStorage</code> / <code>prefers-color-scheme</code> in a blocking head script to prevent FOUC, and provide a ThemeContext toggle in React.</p>`
+    },
+    {
+      id: "R28",
+      q: "How do you test React components (Jest, RTL)?",
+      a: `<p>Use <strong>Vitest / Jest</strong> with <strong>React Testing Library (RTL)</strong> to test components the way a user interacts with them: query by accessible roles (<code>screen.getByRole("button")</code>), simulate interactions with <code>userEvent.click()</code>, and assert visible DOM output rather than internal implementation state.</p>`
+    },
+    {
+      id: "R29",
+      q: "How do you implement HOC (Higher-Order Components)?",
+      a: `<p>A <strong>Higher-Order Component</strong> is a function that takes a component and returns a new enhanced component (<code>const Enhanced = withAuth(Profile)</code>), injecting props or wrapping behavior. In modern React, Custom Hooks have mostly replaced HOCs.</p>`
+    },
+    {
+      id: "R30",
+      q: "What is the role of forwardRef in React?",
+      a: `<p><code>forwardRef</code> (or passing <code>ref</code> directly as a standard prop in React 19) allows a parent component to pass a DOM reference down into a child component's underlying HTML element (such as focusing a custom <code>&lt;Input /&gt;</code>).</p>`
+    }
+  ],
+  nodejs: [
+    {
+      id: "N01",
+      q: "What is the event loop in Node.js and how does it work?",
+      a: `<p>The <strong>Event Loop</strong> (powered by <code>libuv</code>) enables single-threaded Node.js to perform non-blocking I/O operations. It cycles through 6 phases: <strong>Timers</strong> (<code>setTimeout</code>/<code>setInterval</code>) → <strong>Pending Callbacks</strong> → <strong>Idle/Prepare</strong> → <strong>Poll</strong> (retrieves new I/O events) → <strong>Check</strong> (<code>setImmediate</code>) → <strong>Close Callbacks</strong>, draining microtasks (<code>process.nextTick</code> and Promises) between phases.</p>`
+    },
+    {
+      id: "N02",
+      q: "Explain the difference between process.nextTick() and setImmediate().",
+      a: `<p><code>process.nextTick(fn)</code> queues a microtask that runs <strong>immediately after the current synchronous operation finishes</strong>, before the event loop moves to the next phase (can starve I/O if called recursively).<br>
+<code>setImmediate(fn)</code> schedules a callback to run in the <strong>Check phase</strong> of the event loop, after the Poll (I/O) phase completes.</p>`
+    },
+    {
+      id: "N03",
+      q: "How does Node.js handle asynchronous I/O?",
+      a: `<p>When Node initiates an async operation (network socket, file read, DNS lookup, bcrypt hash), it delegates the work to OS kernel async APIs (<code>epoll</code>/<code>kqueue</code>) or <code>libuv</code>'s C++ worker thread pool (default 4 threads). Once complete, the callback is queued on the Event Loop without blocking the main JS thread.</p>`
+    },
+    {
+      id: "N04",
+      q: "What are streams and how do you use them?",
+      a: `<p><strong>Streams</strong> (<code>Readable</code>, <code>Writable</code>, <code>Duplex</code>, <code>Transform</code>) process data piece-by-piece in chunks rather than loading an entire multi-gigabyte file into RAM at once. Use <code>stream.pipeline(source, transform, dest, callback)</code> to pipe streams safely with automatic backpressure and error cleanup.</p>`
+    },
+    {
+      id: "N05",
+      q: "How does clustering work in Node.js?",
+      a: `<p>Because a single Node process runs on one CPU core, the <code>node:cluster</code> module (or PM2 cluster mode) forks multiple worker processes (one per CPU core) that all share the same server port via the primary process, multiplying throughput across multi-core servers.</p>`
+    },
+    {
+      id: "N06",
+      q: "Explain how you’d implement a caching layer in Node.",
+      a: `<p>Use the <strong>Cache-Aside pattern with Redis</strong>: before querying MongoDB, check <code>await redis.get(key)</code>. On a cache hit, return the parsed JSON in ~1ms. On a cache miss, query MongoDB, store the result via <code>await redis.set(key, JSON.stringify(data), "EX", 300)</code> with a TTL, and invalidate/delete the key when the underlying data is updated.</p>`
+    },
+    {
+      id: "N07",
+      q: "How do you handle large file uploads efficiently?",
+      a: `<p>Never buffer large files into server RAM. Either generate a <strong>pre-signed URL</strong> (AWS S3 / GCS) so the browser uploads directly to cloud storage, or stream the incoming multipart request directly to disk/cloud using streaming parsers (<code>busboy</code> + Node streams).</p>`
+    },
+    {
+      id: "N08",
+      q: "What are child processes and how are they used?",
+      a: `<p>The <code>node:child_process</code> module (<code>spawn</code>, <code>exec</code>, <code>execFile</code>, <code>fork</code>) lets Node run external system commands, shell scripts, or separate Node processes with their own memory space, communicating via IPC messages or stdio streams.</p>`
+    },
+    {
+      id: "N09",
+      q: "What is the role of buffers in Node.js?",
+      a: `<p>A <code>Buffer</code> represents a fixed-size chunk of raw binary memory allocated outside V8's heap, used whenever Node deals with binary TCP streams, file system chunks, cryptographic hashes, or image data.</p>`
+    },
+    {
+      id: "N10",
+      q: "How do you monitor and debug Node.js performance?",
+      a: `<p>Use <code>node --inspect</code> with Chrome DevTools CPU/Memory profilers, track Event Loop Lag (<code>perf_hooks.monitorEventLoopDelay</code>), use Clinic.js / flamegraphs, and export Prometheus metrics + OpenTelemetry traces in production.</p>`
+    },
+    {
+      id: "N11",
+      q: "What are worker threads and when would you use them?",
+      a: `<p><code>node:worker_threads</code> run JavaScript in parallel threads within the same process (capable of sharing memory via <code>SharedArrayBuffer</code>). Use them for <strong>CPU-intensive JavaScript tasks</strong> (image resizing, video encoding, heavy JSON/crypto parsing) so the main Event Loop stays free for HTTP requests.</p>`
+    },
+    {
+      id: "N12",
+      q: "Explain how you’d secure a Node.js application.",
+      a: `<p>Keep dependencies audited (<code>npm audit</code>), never run the Node process as <code>root</code> inside Docker, validate all inputs, prevent prototype pollution and NoSQL injection, use parameterized queries, rate-limit auth routes, and store secrets in environment vaults.</p>`
+    },
+    {
+      id: "N13",
+      q: "How do you manage environment variables securely?",
+      a: `<p>Load local variables from <code>.env</code> (added to <code>.gitignore</code>), validate all required env vars at startup using a <strong>Zod schema</strong> (failing fast if <code>JWT_SECRET</code> or <code>MONGODB_URI</code> is missing), and inject production secrets via cloud secret managers (AWS Secrets Manager, GitHub Secrets, Render/Vercel Env).</p>`
+    },
+    {
+      id: "N14",
+      q: "What’s the difference between CommonJS and ES modules?",
+      a: `<p><strong>CommonJS (CJS):</strong> Uses <code>require()</code> and <code>module.exports</code>; loads modules synchronously and dynamically at runtime.<br>
+<strong>ES Modules (ESM):</strong> Official JS standard using <code>import</code> and <code>export</code> (enabled via <code>"type": "module"</code> in <code>package.json</code>); statically analyzed, supports top-level <code>await</code> and tree-shaking.</p>`
+    },
+    {
+      id: "N15",
+      q: "How do you handle rate limiting in Node.js?",
+      a: `<p>Implement a Token Bucket or Sliding Window counter backed by <strong>Redis</strong> (e.g., <code>rate-limiter-flexible</code> or <code>express-rate-limit</code> with <code>rate-limit-redis</code>) so rate limits are enforced consistently across all server instances.</p>`
+    },
+    {
+      id: "N16",
+      q: "How do you implement JWT authentication in Node.js?",
+      a: `<p>On login, verify the password with <code>bcrypt.compare()</code>, sign a short-lived Access Token (15m) and a longer-lived Refresh Token (7d, stored in an <code>httpOnly, Secure, SameSite</code> cookie), and verify the Access Token on protected routes using <code>jwt.verify(token, process.env.JWT_SECRET)</code>.</p>`
+    },
+    {
+      id: "N17",
+      q: "How does dependency injection work in Node?",
+      a: `<p>Pass dependencies (like a database repository, logger, or payment client) as arguments into service factories/constructors rather than hard-importing singletons. This makes unit testing with mocks effortless without needing module-patching hacks.</p>`
+    },
+    {
+      id: "N18",
+      q: "What is the role of fs/promises in Node?",
+      a: `<p><code>require("node:fs/promises")</code> provides native Promise-based file system APIs (<code>await fs.readFile()</code>, <code>await fs.writeFile()</code>) that integrate cleanly with <code>async/await</code> without blocking the main thread or requiring callback nesting.</p>`
+    },
+    {
+      id: "N19",
+      q: "How can you prevent memory leaks?",
+      a: `<p>Avoid unbounded global arrays/caches (use LRU caches with max limits), always remove event listeners / timers on cleanup, close database cursors and streams properly, and take heap snapshots in Chrome DevTools to spot detached objects.</p>`
+    },
+    {
+      id: "N20",
+      q: "How would you implement logging and metrics?",
+      a: `<p>Use <strong>Pino</strong> for low-overhead JSON logs shipped to ELK / Datadog / Grafana Loki, and expose a <code>/metrics</code> endpoint using <code>prom-client</code> to track HTTP request duration histograms, active connections, error rates, and Node heap usage in Prometheus + Grafana.</p>`
+    }
+  ],
+  sysdesign: [
+    {
+      id: "S01",
+      q: "How would you design a scalable MERN-based e-commerce platform?",
+      a: `<p>Place a <strong>CDN (Cloudflare)</strong> in front of the React/Next.js frontend, route API traffic through an <strong>API Gateway / Load Balancer</strong> to stateless Node/Express instances, use <strong>Redis</strong> for cart/session caching and inventory locks, use <strong>MongoDB Atlas</strong> (with compound ESR indexes + ACID transactions for checkout), and offload emails/webhooks/invoices to a message queue (<strong>BullMQ / RabbitMQ</strong>).</p>`
+    },
+    {
+      id: "S02",
+      q: "How do you deploy a MERN app on cloud platforms (e.g., Vercel, Heroku, AWS)?",
+      a: `<p>Containerize the backend with <strong>Docker</strong> or deploy Node/Express to AWS ECS / Render / Railway, deploy the React/Vite or Next.js frontend to Vercel / Cloudflare Pages, connect to a managed <strong>MongoDB Atlas</strong> cluster in the same cloud region, and configure HTTPS, CORS, and environment secrets.</p>`
+    },
+    {
+      id: "S03",
+      q: "What is CI/CD and how would you implement it for a MERN app?",
+      a: `<p><strong>Continuous Integration / Continuous Deployment</strong> automates testing and shipping on every Git push. Using <strong>GitHub Actions</strong>: on Pull Request, run ESLint, typecheck, unit/integration tests, and build check; on merge to <code>main</code>, build the Docker image and trigger zero-downtime deployment to production.</p>`
+    },
+    {
+      id: "S04",
+      q: "How do you manage environment configurations for different environments?",
+      a: `<p>Separate environments into <code>development</code>, <code>staging</code>, and <code>production</code>. Keep code identical across all three (12-Factor App principle) and inject environment-specific URLs, DB URIs, and API keys via platform secret stores validated at boot time.</p>`
+    },
+    {
+      id: "S05",
+      q: "What’s your approach to logging and monitoring in production?",
+      a: `<p>Combine the 3 pillars of observability: <strong>Structured Logs</strong> (Pino + correlation IDs), <strong>Metrics</strong> (Prometheus + Grafana for latency p95/p99, CPU, memory, 5xx rates), and <strong>Error Tracking &amp; Uptime Alerts</strong> (Sentry + healthcheck endpoints <code>GET /health</code>).</p>`
+    },
+    {
+      id: "S06",
+      q: "How would you implement role-based access control (RBAC)?",
+      a: `<p>Assign users roles (e.g. <code>customer</code>, <code>seller</code>, <code>admin</code>) mapped to granular permissions (<code>product:create</code>, <code>order:refund</code>). Encode role/permissions or look them up in middleware, and enforce permission checks on every mutating API endpoint before executing business logic.</p>`
+    },
+    {
+      id: "S07",
+      q: "How do you ensure your REST APIs are RESTful?",
+      a: `<p>Use plural resource nouns (<code>/api/v1/orders</code>), proper HTTP methods (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>), accurate HTTP status codes (<code>200</code>, <code>201</code>, <code>204</code>, <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>409</code>, <code>500</code>), stateless authentication, consistent JSON envelopes, and cursor pagination.</p>`
+    },
+    {
+      id: "S08",
+      q: "What is the difference between monolithic and microservice architectures?",
+      a: `<p><strong>Modular Monolith:</strong> Single deployable codebase with clean module boundaries. Simple to develop, test, deploy, and debug — ideal for most startups and teams.<br>
+<strong>Microservices:</strong> Independently deployed services with separate databases communicating via HTTP/gRPC or message brokers. Enables independent team scaling but adds distributed systems complexity.</p>`
+    },
+    {
+      id: "S09",
+      q: "How would you handle versioning in your APIs?",
+      a: `<p>Prefix routes with the major version in the URI path (<code>/api/v1/users</code>, <code>/api/v2/users</code>) or via an <code>Accept-Version</code> header. Never introduce breaking changes to an existing version — run <code>v1</code> and <code>v2</code> side-by-side with deprecation headers until clients migrate.</p>`
+    },
+    {
+      id: "S10",
+      q: "How do you handle scaling a database with growing user base?",
+      a: `<p>1. Optimize queries &amp; add compound indexes.<br>
+2. Introduce <strong>Redis caching</strong> for hot read paths.<br>
+3. Route read-heavy analytics to <strong>Replica Set Read Replicas</strong>.<br>
+4. Archive old historical records (TTL / cold storage).<br>
+5. Partition horizontally via <strong>MongoDB Sharding</strong> once write throughput exceeds a single primary node.</p>`
+    }
+  ]
+};
+
+function renderSection(containerId, items) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = items.map(item => `
+    <details class="q-card" id="${item.id.toLowerCase()}" data-qid="${item.id}">
+      <summary class="q-summary">
+        <input type="checkbox" class="q-check" data-checkid="${item.id}" aria-label="Mark ${item.id} practiced" onclick="event.stopPropagation()">
+        <span class="q-idx">${item.id}</span>
+        <span class="q-text">${item.q}</span>
+        <span class="q-chevron">▼ Answer</span>
+      </summary>
+      <div class="q-answer">${item.a}</div>
+    </details>
+  `).join('');
+}
+
+renderSection('list-mongodb', QA_DATA.mongodb);
+renderSection('list-expressjs', QA_DATA.expressjs);
+renderSection('list-reactjs', QA_DATA.reactjs);
+renderSection('list-nodejs', QA_DATA.nodejs);
+renderSection('list-sysdesign', QA_DATA.sysdesign);
+
+// Progress persistence
+const checks = document.querySelectorAll('.q-check');
+const counter = document.getElementById('progressCounter');
+const saved = JSON.parse(localStorage.getItem('mern100_checked_v2') || '[]');
+
+function updateCount() {
+  let done = 0;
+  const activeIds = [];
+  checks.forEach(c => {
+    const card = c.closest('.q-card');
+    const id = c.dataset.checkid;
+    if (c.checked) {
+      done++;
+      activeIds.push(id);
+      card.classList.add('done');
+    } else {
+      card.classList.remove('done');
+    }
+  });
+  counter.textContent = `${done} / 100 Practiced`;
+  localStorage.setItem('mern100_checked_v2', JSON.stringify(activeIds));
+}
+
+checks.forEach(c => {
+  if (saved.includes(c.dataset.checkid)) c.checked = true;
+  c.addEventListener('change', updateCount);
+});
+updateCount();
+
+// Expand / Collapse all
+document.getElementById('expandAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('details.q-card').forEach(d => { d.open = true; });
+});
+document.getElementById('collapseAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('details.q-card').forEach(d => { d.open = false; });
+});
+
+// Live search across questions AND answers
+document.getElementById('qSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('details.q-card').forEach(card => {
+    const match = !q || card.textContent.toLowerCase().includes(q);
+    card.style.display = match ? '' : 'none';
+    if (q && match) card.open = true;
+  });
+});
+
+// Sidebar scrollspy
+const sections = document.querySelectorAll('.section-block');
+const navLinks = document.querySelectorAll('.sidebar .nav-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { rootMargin: '-20% 0px -65% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
