@@ -566,6 +566,7 @@ a{color:var(--accent3)}
 .bp-stats .t-gold{color:var(--gold)}
 
 
+
 /* === SHERYIANS HUB NAV INJECTION === */
 .hub-back-pill {
   display: inline-flex;
@@ -670,7 +671,7 @@ a{color:var(--accent3)}
 <div class="layout-container">
 <aside class="sidebar" aria-label="Contents">
 <div class="nav-brand"><div class="logo">Sheryians<span class="accent-dot">.</span></div><div class="sub">Backend · MongoDB Indexing</div></div>
-<!-- HUB-BACK-PILL --><a href="index.html#module-08" class="hub-back-pill">← Curriculum Hub · 08/13</a><!-- /HUB-BACK-PILL -->
+<!-- HUB-BACK-PILL --><a href="index.html#module-11" class="hub-back-pill">← Curriculum Hub · 11/13</a><!-- /HUB-BACK-PILL -->
 <div class="nav-group-label">Notes</div>
 <a class="nav-link" href="#problem"><span class="nav-num">01</span><span>The problem</span></a><a class="nav-link" href="#what"><span class="nav-num">02</span><span>What an index is</span></a><a class="nav-link" href="#why-bplus"><span class="nav-num">03</span><span>Why B+ trees</span></a><a class="nav-link" href="#bplus-tree"><span class="nav-num">04</span><span>B+ tree insert & delete</span></a><a class="nav-link" href="#inside-mongodb"><span class="nav-num">05</span><span>Inside MongoDB</span></a><a class="nav-link" href="#implement"><span class="nav-num">06</span><span>createIndex & explain()</span></a><a class="nav-link" href="#types"><span class="nav-num">07</span><span>Every index type</span></a><a class="nav-link" href="#when"><span class="nav-num">08</span><span>What to use when</span></a><a class="nav-link" href="#pitfalls"><span class="nav-num">09</span><span>Pitfalls & performance</span></a><a class="nav-link" href="#practice"><span class="nav-num">10</span><span>Interview & practice</span></a>
 <div class="nav-group-label">Index types (§07)</div>
@@ -678,7 +679,7 @@ a{color:var(--accent3)}
 <div class="theme-toggle" role="group" aria-label="Theme"><button type="button" data-theme-set="light">Light</button><button type="button" data-theme-set="auto" aria-pressed="true">Auto</button><button type="button" data-theme-set="dark">Dark</button></div>
 </aside>
 <main class="main-content"><div class="main-inner">
-<!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-08">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 08 of 13 · MongoDB Indexing</span><a href="07-mongodb-aggregation-notes.html">Next: 09 · MongoDB Aggregation Pipeline →</a></div><!-- /HUB-TOP-BAR -->
+<!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-11">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 11 of 13 · Indexing in MongoDB</span><a href="socket-io-notes.html">Next: 12 · Socket.IO Notes →</a></div><!-- /HUB-TOP-BAR -->
 <header class="hero">
 <div class="hero-grid">
 <div>
@@ -1409,7 +1410,7 @@ mongoose.connect(uri, { <span class="token-yaml-key">autoIndex</span>: process.e
 
 <div class="concept-box"><div class="concept-box-label">One paragraph to remember</div><div class="concept-box-text">An index is a sorted B+ tree of keys pointing at documents, kept in sync on every write. Its shape matches the disk (one node = one page, hundreds of keys, 3–4 levels), so reads cost a few page hits instead of a scan, and linked leaves make ranges and sorts free. Every index type is that same tree with a different key. Build indexes from your queries in ESR order, verify with explain(), and never forget that each one taxes every write.</div></div>
 
-</section><!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="mongodb-intro-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (07)</span><span class="hub-pager-title">MongoDB Introduction</span></a><a href="index.html#module-08" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="07-mongodb-aggregation-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (09) →</span><span class="hub-pager-title">MongoDB Aggregation Pipeline</span></a></nav><!-- /HUB-PAGER -->
+</section><!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="mern-interview-questions.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (10)</span><span class="hub-pager-title">Interview Prep Sheet</span></a><a href="index.html#module-11" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="socket-io-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (12) →</span><span class="hub-pager-title">Socket.IO Notes</span></a></nav><!-- /HUB-PAGER -->
 <footer class="site-footer"><span>Sheryians Coding School · Backend · MongoDB Indexing</span><span>Cohort notes · B+ tree demos computed live · MongoDB 7/8 semantics</span></footer>
 </div></main>
 </div>

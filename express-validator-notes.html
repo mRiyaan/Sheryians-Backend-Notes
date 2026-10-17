@@ -1307,6 +1307,7 @@ code.inline-code {
 .diagram-counter i { font-style: normal; }
 
 
+
 /* === SHERYIANS HUB NAV INJECTION === */
 .hub-back-pill {
   display: inline-flex;
@@ -1409,11 +1410,12 @@ code.inline-code {
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="layout-container">
 <nav class="sidebar" aria-label="Sections"><div class="nav-brand"><div class="logo">Express<span class="accent-dot">.</span>Validator</div><div class="sub">Sheryians Coding School</div></div>
-<!-- HUB-BACK-PILL --><a href="index.html#module-04" class="hub-back-pill">← Curriculum Hub · 04/13</a><!-- /HUB-BACK-PILL --><div class="nav-group-label">The why</div><a href="#problem" class="nav-link active"><span class="nav-num">1</span>The problem</a><a href="#val-vs-ver" class="nav-link"><span class="nav-num">2</span>Validation vs verification</a><a href="#why-server" class="nav-link"><span class="nav-num">3</span>Why not just the schema?</a><div class="nav-group-label">The how</div><a href="#manual" class="nav-link"><span class="nav-num">4</span>Plain validation</a><a href="#express-validator" class="nav-link"><span class="nav-num">5</span>express-validator</a><a href="#zod-joi" class="nav-link"><span class="nav-num">6</span>Zod and Joi</a><div class="nav-group-label">Wrap up</div><a href="#full-picture" class="nav-link"><span class="nav-num">7</span>The full picture</a><div class="nav-foot">Example API<br><code>POST /api/auth/register</code><br>fields: email · phone · password</div></nav>
+<!-- HUB-BACK-PILL --><a href="index.html#module-08" class="hub-back-pill">← Curriculum Hub · 08/13</a><!-- /HUB-BACK-PILL -->
+<div class="nav-group-label">The why</div><a href="#problem" class="nav-link active"><span class="nav-num">1</span>The problem</a><a href="#val-vs-ver" class="nav-link"><span class="nav-num">2</span>Validation vs verification</a><a href="#why-server" class="nav-link"><span class="nav-num">3</span>Why not just the schema?</a><div class="nav-group-label">The how</div><a href="#manual" class="nav-link"><span class="nav-num">4</span>Plain validation</a><a href="#express-validator" class="nav-link"><span class="nav-num">5</span>express-validator</a><a href="#zod-joi" class="nav-link"><span class="nav-num">6</span>Zod and Joi</a><div class="nav-group-label">Wrap up</div><a href="#full-picture" class="nav-link"><span class="nav-num">7</span>The full picture</a><div class="nav-foot">Example API<br><code>POST /api/auth/register</code><br>fields: email · phone · password</div></nav>
 <main class="main-content" id="main">
 <div class="content-inner">
 
-<!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-04">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 04 of 13 · Validation in Express</span><a href="authentication-notes.html">Next: 05 · Authentication 101 →</a></div><!-- /HUB-TOP-BAR -->
+<!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-08">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 08 of 13 · Express-Validator Notes</span><a href="07-mongodb-aggregation-notes.html">Next: 09 · Aggregation Pipeline Notes →</a></div><!-- /HUB-TOP-BAR -->
 <header class="hero" id="top">
   <div class="animate-slide-left">
     <div class="hero-eyebrow">Backend · Request validation</div>
@@ -2309,7 +2311,7 @@ defaults. Decide which behaviour your frontend wants and configure for it.</p>
 
 <div class="quiz-box"><div class="quiz-kicker">Quick check</div><p class="quiz-question">An email passes validation and the “already registered” check, but two identical sign-ups arrive in the same millisecond. What finally stops the duplicate?</p><div class="quiz-options" id="quiz-full-2"><button type="button" onclick="answerQuiz('quiz-full-2', this, true)" class="quiz-option" data-correct="true">A &nbsp;—&nbsp; The unique index in the database</button><button type="button" onclick="answerQuiz('quiz-full-2', this, false)" class="quiz-option" data-correct="false">B &nbsp;—&nbsp; The async <code class="inline-code">.custom()</code> check in express-validator</button></div><div class="quiz-feedback hidden" id="quiz-full-2-feedback" aria-live="polite"></div><p class="quiz-explain" id="quiz-full-2-explain" hidden>Both requests can run the existence check before either one saves. Only the database index guarantees uniqueness — that's why you keep it even with server-side checks.</p></div>
 </section>
-<!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="rest-api-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (03)</span><span class="hub-pager-title">REST API Fundamentals</span></a><a href="index.html#module-04" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="authentication-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (05) →</span><span class="hub-pager-title">Authentication 101</span></a></nav><!-- /HUB-PAGER -->
+<!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="url-shortener-srs.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (07)</span><span class="hub-pager-title">URL Shortener SRS Notes</span></a><a href="index.html#module-08" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="07-mongodb-aggregation-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (09) →</span><span class="hub-pager-title">Aggregation Pipeline Notes</span></a></nav><!-- /HUB-PAGER -->
 <footer class="site-footer">
   <span>Sheryians Coding School · Validation Notes</span>
   <span>Tested with Express 5.2 · express-validator 7.3 · Zod 4.6 · Joi 18 · Mongoose 9</span>

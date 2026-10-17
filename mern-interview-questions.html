@@ -329,6 +329,13 @@ details.q-card[open] .q-chevron {
   color: var(--muted);
 }
 
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main-content { max-width: 100%; padding: 32px 20px 64px; }
+  .q-answer { padding-left: 18px; }
+}
+
 /* === SHERYIANS HUB NAV INJECTION === */
 .hub-back-pill {
   display: inline-flex;
@@ -372,8 +379,12 @@ details.q-card[open] .q-chevron {
   align-items: center;
   gap: 6px;
 }
-.hub-top-bar a:hover { text-decoration: underline; }
-.hub-top-meta { color: var(--muted, #6B6455); }
+.hub-top-bar a:hover {
+  text-decoration: underline;
+}
+.hub-top-meta {
+  color: var(--muted, #6B6455);
+}
 .hub-pager {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -398,8 +409,13 @@ details.q-card[open] .q-chevron {
   border-color: var(--accent, #C84B1F);
   transform: translateY(-2px);
 }
-.hub-pager-card.next { text-align: right; }
-.hub-pager-card.center { text-align: center; background: transparent; }
+.hub-pager-card.next {
+  text-align: right;
+}
+.hub-pager-card.center {
+  text-align: center;
+  background: transparent;
+}
 .hub-pager-dir {
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
@@ -416,12 +432,6 @@ details.q-card[open] .q-chevron {
   color: var(--ink, #0E0F14);
 }
 /* === END SHERYIANS HUB NAV INJECTION === */
-
-@media (max-width: 900px) {
-  .sidebar { display: none; }
-  .main-content { max-width: 100%; padding: 32px 20px 64px; }
-  .q-answer { padding-left: 18px; }
-}
 </style>
 </head>
 <body>
@@ -434,8 +444,8 @@ details.q-card[open] .q-chevron {
       <div class="logo">MERN<span class="accent-dot">.</span>100</div>
       <div class="sub">Sheryians Coding School</div>
     </div>
-    <!-- HUB-BACK-PILL --><a href="index.html#module-13" class="hub-back-pill">← Curriculum Hub · 13/13</a><!-- /HUB-BACK-PILL -->
-
+<!-- HUB-BACK-PILL --><a href="index.html#module-10" class="hub-back-pill">← Curriculum Hub · 10/13</a><!-- /HUB-BACK-PILL -->
+    
     <div class="nav-group-label">Question &amp; Answer Banks</div>
     <a href="#mongodb" class="nav-link active"><span class="nav-num">01</span>MongoDB (20 Q&amp;As)</a>
     <a href="#expressjs" class="nav-link"><span class="nav-num">02</span>Express.js (20 Q&amp;As)</a>
@@ -448,9 +458,9 @@ details.q-card[open] .q-chevron {
   <main class="main-content">
     <div class="main-inner">
 
-      <!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-13">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 13 of 13 · 100 MERN Interview Qs</span><a href="index.html">All 13 Modules Complete ✓</a></div><!-- /HUB-TOP-BAR -->
-
-      <header class="hero">
+      
+      <!-- HUB-TOP-BAR --><div class="hub-top-bar"><a href="index.html#module-10">← Back to Curriculum Hub</a><span class="hub-top-meta">Module 10 of 13 · Interview Prep Sheet</span><a href="mongodb-indexing-notes.html">Next: 11 · Indexing in MongoDB →</a></div><!-- /HUB-TOP-BAR -->
+<header class="hero">
         <div class="hero-eyebrow">Prepared by Sheryians · Cohort 1.0 Parting Gift</div>
         <h1>100 Essential Interview Questions &amp; Answers for <em>MERN Developers</em></h1>
         <p class="hero-desc">
@@ -534,9 +544,9 @@ details.q-card[open] .q-chevron {
         <div class="q-list" id="list-sysdesign"></div>
       </section>
 
-      <!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="payment-gateway-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (12)</span><span class="hub-pager-title">Payment Gateway</span></a><a href="index.html#module-13" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="index.html" class="hub-pager-card next"><span class="hub-pager-dir">Path Completed! →</span><span class="hub-pager-title">Return to Curriculum Hub</span></a></nav><!-- /HUB-PAGER -->
-
-      <footer class="site-footer">
+      
+      <!-- HUB-PAGER --><nav class="hub-pager" aria-label="Module Navigation"><a href="07-mongodb-aggregation-notes.html" class="hub-pager-card prev"><span class="hub-pager-dir">← Previous Module (09)</span><span class="hub-pager-title">Aggregation Pipeline Notes</span></a><a href="index.html#module-10" class="hub-pager-card center"><span class="hub-pager-dir">All Notes</span><span class="hub-pager-title">↑ Curriculum Hub (13 Modules)</span></a><a href="mongodb-indexing-notes.html" class="hub-pager-card next"><span class="hub-pager-dir">Next Module (11) →</span><span class="hub-pager-title">Indexing in MongoDB</span></a></nav><!-- /HUB-PAGER -->
+<footer class="site-footer">
         <span>Sheryians Coding School · 100 Essential MERN Interview Questions &amp; Answers</span>
         <span>Prepared by Sheryians | Cohort 1.0</span>
       </footer>
